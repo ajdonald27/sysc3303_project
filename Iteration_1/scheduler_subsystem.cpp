@@ -23,7 +23,7 @@ class SchedulerSubsystem {
 
             // printout for message received and sending request to the right user.
             cout << "Scheduler assigning request to elevator: " << " Floor " << req.floorNumber << ", Direction" << req.direction << endl; 
-            elevatorSub.receiveRequest(req); 
+            elevatorSubsystem.receiveRequest(req); 
         }
 
 
