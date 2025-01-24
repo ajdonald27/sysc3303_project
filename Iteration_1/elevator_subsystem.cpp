@@ -6,7 +6,6 @@
 
 #include "floor_subsystem.hpp"
 #include "elevator_subsystem.hpp"
-#include "scheduler_subsystem.hpp"
 
 using namespace std; 
 
@@ -24,4 +23,4 @@ class ElevatorSubsystem {
     {
         cout << "Elevator has completed the request for floor " << req.floorNumber << endl; 
     }
-}
+};
