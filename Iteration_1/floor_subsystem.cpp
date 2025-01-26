@@ -6,6 +6,8 @@
 
 
 #include "floor_subsystem.hpp"
+#include "elevator_subsystem.hpp"
+#include "scheduler_subsystem.hpp"
 
 
 using namespace std; 

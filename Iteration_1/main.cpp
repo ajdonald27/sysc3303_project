@@ -4,16 +4,29 @@
  * Date: January 23rd, 2025
  */
 
-#include "elevator_subsystem.hpp"
 #include "floor_subsystem.hpp"
-#include "scheduler_subsystem.hpp"
-#include <mutex> 
-#include <queue> 
-#include <iostream> 
-#include <thread> 
+#include "elevator_subsystem.hpp" 
+#include "scheduler_subsystem.hpp" 
 
+using namespace std; 
 int main() 
 { 
-    // FloorSubsystem floorSub; 
+    FloorSubsystem floorSub;
+    ElevatorSubsystem elevatorSub; 
+    SchedulerSubsystem schedulerSub;
+
+    thread floorThread([&]
+    {
+        floorSub.readRequest_SendScheduler();
+    });
+
+    thread schedulerThread([&]
+    {
+        schedulerSub.receiveReqandAssignElevator();
+    });
+
+    floorThread.join();
+    schedulerThread.join();
+    
 
 }
