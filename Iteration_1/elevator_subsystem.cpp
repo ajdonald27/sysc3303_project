@@ -6,21 +6,18 @@
 
 #include "floor_subsystem.hpp"
 #include "elevator_subsystem.hpp"
+#include "logger.h" 
 
 using namespace std; 
 
 class ElevatorSubsystem {
-
+public: 
     void receiveRequest(FloorRequest& req)
     {
-        cout << "The elevator has received a request to move to floor " << req.floorNumber 
-        << " in direction " << req.direction  << endl; 
+        Logger::logElevatorTask("Received a task: Floor: " + to_string(req.floorNumber) + ", Direction " + req.direction);
 
-        //scheduler.notifyCompletion();
-    }
+        Logger::logElevatorTask("Elevator is moving to Floor " + to_string(req.floorNumber));
 
-    void notifyCompletion(FloorRequest& req)
-    {
-        cout << "Elevator has completed the request for floor " << req.floorNumber << endl; 
+        Logger::logElevatorTask("Completed task for Floor " + to_string(req.floorNumber));
     }
 };

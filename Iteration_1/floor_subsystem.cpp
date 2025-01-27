@@ -14,20 +14,37 @@ using namespace std;
 
 class FloorSubsystem { 
     public: 
+
+        FloorSubsystem(SchedulerSubsystem& scheduler) : schedulerSub(scheduler) {}
         void readRequest_SendScheduler()
         {
-            FloorRequest req = {2, "up", 3}; 
+
+            ifstream file("trace.txt"); 
+            string line; 
+
+            while(getline(file, line))
             {
-                lock_guard<mutex> lock(schedulerMutex);
-                schedulerQueue.push(req);
+                // get the data about the floor request from the file 
+                istringstream iss(line); 
+                string time, floor, direction, button; 
+                iss >> time >> floor >> direction >> button; 
+
+
+                // convert / create a new request based on the read data 
+                FloorRequest req = {stoi(floor), direction, stoi(button)};
+
+                
+                Logger::logFloorTask("Task added to queue: " + floor + ", Direction " + direction); 
+
+
+                // add new req to the queue and notify 
+                schedulerSub.addToQueue(req); 
             }
-            // notify the scheduler about the new request in the queue
-            schedulerCV.notify_one();
+
+        file.close();
         }
 
 
     private:
-        mutex schedulerMutex; 
-        queue<FloorRequest> schedulerQueue; 
-        condition_variable schedulerCV; 
+        SchedulerSubsystem& schedulerSub; 
 };

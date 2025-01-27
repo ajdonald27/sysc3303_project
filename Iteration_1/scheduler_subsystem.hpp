@@ -19,9 +19,10 @@ using namespace std;
 
 class SchedulerSubsystem { 
     public: 
-        void receiveReqandAssignElevator();
+        void addToQueue(FloorRequest &req);
 
 
+        void processTask(); 
 
     private:
         mutex schedulerMutex; 

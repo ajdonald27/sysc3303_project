@@ -3,11 +3,16 @@
  * Authors: Aj Donald, XX, XX 
  * Date: January 23rd, 2025
  */
-#include <string.h>
+#include <string>
 #include <thread> 
 #include <iostream> 
 #include <condition_variable> 
 #include <mutex> 
+#include <fstream> 
+#include <sstream> 
+#include <queue> 
+#include "logger.h" 
+
 #ifndef FLOOR_SUBSYSTEM_HPP
 #define FLOOR_SUBSYSTEM_HPP
 
@@ -21,11 +26,11 @@ struct FloorRequest {
 
 class FloorSubsystem {
 public:
+
+    FloorSubsystem(SchedulerSubsystem& scheduler) : schedulerSub(scheduler) {}
     void readRequest_SendScheduler();
 
     private:
-        mutex schedulerMutex; 
-        queue<FloorRequest> schedulerQueue; 
-        condition_variable schedulerCV; 
+        SchedulerSubsystem& schedulerSub;
 };
 #endif;

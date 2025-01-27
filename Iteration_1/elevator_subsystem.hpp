@@ -13,8 +13,6 @@
 class ElevatorSubsystem {
 public:
     void receiveRequest(const FloorRequest& req);
-    void notifyCompletion(const FloorRequest& req);
-private:
-    int currentFloor; 
+
 };
-#endif // ELEVATOR_SUBSYSTEM_HPP
+#endif 

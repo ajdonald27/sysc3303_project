@@ -7,13 +7,15 @@
 #include "floor_subsystem.hpp"
 #include "elevator_subsystem.hpp" 
 #include "scheduler_subsystem.hpp" 
+#include <thread> 
 
 using namespace std; 
 int main() 
 { 
-    FloorSubsystem floorSub;
-    ElevatorSubsystem elevatorSub; 
     SchedulerSubsystem schedulerSub;
+
+    FloorSubsystem floorSub(schedulerSub);
+    ElevatorSubsystem elevatorSub; 
 
     thread floorThread([&]
     {
@@ -22,9 +24,16 @@ int main()
 
     thread schedulerThread([&]
     {
-        schedulerSub.receiveReqandAssignElevator();
+        while(true)
+        {
+            schedulerSub.processTask();
+        }
     });
 
+    thread elevatorThread([&]
+    {
+        //elevatorSub.receiveRequest();
+    });
     floorThread.join();
     schedulerThread.join();
     
