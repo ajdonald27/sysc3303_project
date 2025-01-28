@@ -22,7 +22,6 @@ void FloorSubsystem::readRequest_SendScheduler()
 {
     ifstream file("trace.txt");
     string line;
-    bool read = false;
     while (getline(file, line)) {
         
         // parsing the data from the trace file 
@@ -38,9 +37,8 @@ void FloorSubsystem::readRequest_SendScheduler()
     }
 
     file.close();
-    read = true;
     // After adding all tasks notify the scheduler to process them
-    if (read && schedulerSub.isQueueEmpty()) {
+    if (schedulerSub.isQueueEmpty()) {
         schedulerSub.completed = true; 
     }
 }
