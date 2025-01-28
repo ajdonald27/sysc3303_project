@@ -4,16 +4,49 @@
  * Date: January 23rd, 2025
  */
 
-#include "elevator_subsystem.hpp"
 #include "floor_subsystem.hpp"
-#include "scheduler_subsystem.hpp"
-#include <mutex> 
-#include <queue> 
-#include <iostream> 
+#include "elevator_subsystem.hpp" 
+#include "scheduler_subsystem.hpp" 
 #include <thread> 
+#include <iostream> 
 
+using namespace std; 
 int main() 
 { 
-    // FloorSubsystem floorSub; 
+    ElevatorSubsystem elevatorSub; 
 
+    SchedulerSubsystem schedulerSub(elevatorSub);
+
+    FloorSubsystem floorSub(schedulerSub);
+
+    thread floorThread([&]
+    {
+        floorSub.readRequest_SendScheduler();
+    });
+
+    thread schedulerThread([&]
+    {
+        while(!schedulerSub.isQueueEmpty() || !schedulerSub.completed)
+        {
+            schedulerSub.processTask();
+        }
+    });
+
+    thread elevatorThread([&]
+    {
+        while(true)
+        {   
+            if(schedulerSub.isQueueEmpty() && schedulerSub.completed)
+            {
+                break;
+            }
+            // this thread is just processing tasks for the SchedulerSubsystem 
+            // Meaning, for this sim each request is processed sequentially through the SchedulerSub's processTask method.
+        }
+    });
+    floorThread.join();
+    schedulerThread.join();
+    elevatorThread.join();
+
+    cout << "All tasks completed, program terminating" << endl; 
 }

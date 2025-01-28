@@ -5,21 +5,23 @@
  */
 
 
-// #include <string.h>
-// #include <thread> 
-// #include <iostream> 
-// #include <condition_variable> 
-// #include <mutex> 
-#include "floor_subsystem.hpp"
-
 #ifndef ELEVATOR_SUBSYSTEM_HPP
 #define ELEVATOR_SUBSYSTEM_HPP
 
+#include "floor_request.hpp"
+
 class ElevatorSubsystem {
 public:
-    void receiveRequest(const FloorRequest& req);
-    void notifyCompletion(const FloorRequest& req);
+
+    ElevatorSubsystem(); 
+
+    void receiveRequest(FloorRequest& req);
+
+    void simulateMovement(FloorRequest& req);
+
+    int getCurrentFloor();
+
 private:
-    int currentFloor; 
+    int currentFloor;
 };
-#endif // ELEVATOR_SUBSYSTEM_HPP
+#endif

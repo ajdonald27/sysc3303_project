@@ -4,32 +4,49 @@
  * Date: January 23rd, 2025
  */
 
-#include "floor_subsystem.hpp"
-#include "elevator_subsystem.hpp"
+#include "logger.hpp"
 #include "scheduler_subsystem.hpp"
 
 using namespace std;
 
-class SchedulerSubsystem {
-    public: 
-        void receiveReqandAssignElevator(FloorRequest& req)
-        {
-            // scheduler waits on the mutex, then checks if the queue is empty or not 
-            unique_lock<mutex> lock(schedulerMutex); 
-            schedulerCV.wait(lock, [this]{ return !schedulerQueue.empty();});
 
-            FloorRequest req = schedulerQueue.front(); 
-            schedulerQueue.pop();
+SchedulerSubsystem::SchedulerSubsystem(ElevatorSubsystem& elevator)  : elevatorSubsystem(elevator), ready(false), completed(false) {}
 
-            // printout for message received and sending request to the right user.
-            cout << "Scheduler assigning request to elevator: " << " Floor " << req.floorNumber << ", Direction" << req.direction << endl; 
-            elevatorSubsystem.receiveRequest(req); 
+
+void SchedulerSubsystem::addToQueue(FloorRequest& req)
+    {
+
+    // scheduler waits on the mutex, then checks if the queue is empty or not 
+    unique_lock<mutex> lock(schedulerMutex); 
+            
+
+    schedulerQueue.push(req); 
+    // printout for message received and sending request to the right user.
+    Logger::logSchedulerTask("Task added to queue: Floor " + to_string(req.floorNumber) + ", Direction " + req.direction); 
+
+    ready = true; 
+    schedulerCV.notify_one(); 
+    }
+
+void SchedulerSubsystem::processTask()
+{
+    unique_lock<mutex> lock(schedulerMutex);
+
+    while (!completed || !schedulerQueue.empty()) 
+    { 
+        schedulerCV.wait(lock, [this] { return !schedulerQueue.empty() || completed; });
+
+        if (schedulerQueue.empty()) {
+            completed = true; 
+            break;
         }
 
-
-    private:
-        mutex schedulerMutex;
-        queue<FloorRequest> schedulerQueue;
-        condition_variable schedulerCV; 
-        ElevatorSubsystem elevatorSubsystem; 
-};
+        FloorRequest req = schedulerQueue.front();
+        schedulerQueue.pop();
+        elevatorSubsystem.receiveRequest(req);
+    }
+}
+bool SchedulerSubsystem::isQueueEmpty()
+{
+    return schedulerQueue.empty(); 
+}

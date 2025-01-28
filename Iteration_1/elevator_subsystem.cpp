@@ -4,23 +4,34 @@
  * Date: January 23rd, 2025
  */
 
-#include "floor_subsystem.hpp"
 #include "elevator_subsystem.hpp"
+#include "logger.hpp"
+#include <iostream>
+#include <thread> 
+#include <chrono> 
+
 
 using namespace std; 
 
-class ElevatorSubsystem {
+ElevatorSubsystem::ElevatorSubsystem() {}
 
-    void receiveRequest(FloorRequest& req)
-    {
-        cout << "The elevator has received a request to move to floor " << req.floorNumber 
-        << " in direction " << req.direction  << endl; 
+void ElevatorSubsystem::receiveRequest(FloorRequest& req)
+{
+    Logger::logElevatorTask("Received a task: Floor: " + to_string(req.floorNumber) + ", Direction " + req.direction);
 
-        //scheduler.notifyCompletion();
-    }
+    simulateMovement(req); 
 
-    void notifyCompletion(FloorRequest& req)
-    {
-        cout << "Elevator has completed the request for floor " << req.floorNumber << endl; 
-    }
-};
+    Logger::logElevatorTask("Completed task for Floor " + to_string(req.floorNumber));
+}
+
+void ElevatorSubsystem::simulateMovement(FloorRequest& req)
+{
+    currentFloor = req.floorNumber;
+    cout << "Elevator is moving to Floor: " << req.floorNumber << endl; 
+    this_thread::sleep_for(chrono::seconds(1)); 
+}
+
+int ElevatorSubsystem::getCurrentFloor()
+{
+    return currentFloor;
+}
