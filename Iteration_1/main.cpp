@@ -8,14 +8,16 @@
 #include "elevator_subsystem.hpp" 
 #include "scheduler_subsystem.hpp" 
 #include <thread> 
+#include <iostream> 
 
 using namespace std; 
 int main() 
 { 
-    SchedulerSubsystem schedulerSub;
+    ElevatorSubsystem elevatorSub; 
+
+    SchedulerSubsystem schedulerSub(elevatorSub);
 
     FloorSubsystem floorSub(schedulerSub);
-    ElevatorSubsystem elevatorSub; 
 
     thread floorThread([&]
     {
@@ -32,10 +34,14 @@ int main()
 
     thread elevatorThread([&]
     {
-        //elevatorSub.receiveRequest();
+        while(true)
+        {
+            // this thread is just processing tasks for the SchedulerSubsystem 
+            // Meaning, for this sim each request is processed sequentially through the SchedulerSub's processTask method.
+        }
     });
     floorThread.join();
     schedulerThread.join();
-    
+    elevatorThread.join();
 
 }

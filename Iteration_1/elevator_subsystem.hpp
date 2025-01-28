@@ -4,15 +4,19 @@
  * Date: January 23rd, 2025
  */
 
-#include "floor_subsystem.hpp"
-#include "scheduler_subsystem.hpp"
 
 #ifndef ELEVATOR_SUBSYSTEM_HPP
 #define ELEVATOR_SUBSYSTEM_HPP
 
+#include "floor_request.hpp"
+
 class ElevatorSubsystem {
 public:
-    void receiveRequest(const FloorRequest& req);
 
+    ElevatorSubsystem(); 
+
+    void receiveRequest(FloorRequest& req);
+
+    void simulateMovement(FloorRequest& req);
 };
-#endif 
+#endif

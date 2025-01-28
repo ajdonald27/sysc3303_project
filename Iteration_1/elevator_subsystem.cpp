@@ -4,20 +4,28 @@
  * Date: January 23rd, 2025
  */
 
-#include "floor_subsystem.hpp"
 #include "elevator_subsystem.hpp"
-#include "logger.h" 
+#include "logger.hpp"
+#include <iostream>
+#include <thread> 
+#include <chrono> 
+
 
 using namespace std; 
 
-class ElevatorSubsystem {
-public: 
-    void receiveRequest(FloorRequest& req)
-    {
-        Logger::logElevatorTask("Received a task: Floor: " + to_string(req.floorNumber) + ", Direction " + req.direction);
+ElevatorSubsystem::ElevatorSubsystem() {}
 
-        Logger::logElevatorTask("Elevator is moving to Floor " + to_string(req.floorNumber));
+void ElevatorSubsystem::receiveRequest(FloorRequest& req)
+{
+    Logger::logElevatorTask("Received a task: Floor: " + to_string(req.floorNumber) + ", Direction " + req.direction);
 
-        Logger::logElevatorTask("Completed task for Floor " + to_string(req.floorNumber));
-    }
-};
+    simulateMovement(req); 
+
+    Logger::logElevatorTask("Completed task for Floor " + to_string(req.floorNumber));
+}
+
+void ElevatorSubsystem::simulateMovement(FloorRequest& req)
+{
+    cout << "Elevator is moving to Floor: " << req.floorNumber << endl; 
+    this_thread::sleep_for(chrono::seconds(1)); 
+}

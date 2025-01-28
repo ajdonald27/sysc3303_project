@@ -4,30 +4,30 @@
  * Date: January 23rd, 2025
  */
 
-
-#include <string.h>
-#include <thread> 
-#include <iostream> 
-#include <condition_variable> 
-#include <mutex> 
-#include "floor_subsystem.hpp"
-using namespace std; 
-
 #ifndef SCHEDULER_SUBSYSTEM_HPP
 #define SCHEDULER_SUBSYSTEM_HPP
 
+#include "floor_request.hpp"
+#include "elevator_subsystem.hpp"
+#include <queue> 
+#include <condition_variable> 
+#include <mutex> 
+
+using namespace std; 
 
 class SchedulerSubsystem { 
     public: 
+        SchedulerSubsystem(ElevatorSubsystem& elevator);
+
         void addToQueue(FloorRequest &req);
-
-
         void processTask(); 
 
     private:
-        mutex schedulerMutex; 
-        queue<FloorRequest> schedulerQueue; 
+        mutex schedulerMutex;
+        queue<FloorRequest> schedulerQueue;
         condition_variable schedulerCV; 
+        ElevatorSubsystem& elevatorSubsystem; 
+        bool ready; 
 };
-#endif; 
+#endif
 
