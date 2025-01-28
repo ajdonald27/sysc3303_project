@@ -26,6 +26,12 @@ void ElevatorSubsystem::receiveRequest(FloorRequest& req)
 
 void ElevatorSubsystem::simulateMovement(FloorRequest& req)
 {
+    currentFloor = req.floorNumber;
     cout << "Elevator is moving to Floor: " << req.floorNumber << endl; 
     this_thread::sleep_for(chrono::seconds(1)); 
+}
+
+int ElevatorSubsystem::getCurrentFloor()
+{
+    return currentFloor;
 }

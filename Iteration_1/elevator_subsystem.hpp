@@ -18,5 +18,10 @@ public:
     void receiveRequest(FloorRequest& req);
 
     void simulateMovement(FloorRequest& req);
+
+    int getCurrentFloor();
+
+private:
+    int currentFloor;
 };
 #endif
