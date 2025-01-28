@@ -29,6 +29,11 @@ int main()
         while(!schedulerSub.isQueueEmpty() || !schedulerSub.completed)
         {
             schedulerSub.processTask();
+
+            if(schedulerSub.completed)
+            {
+                break;
+            }
         }
     });
 
