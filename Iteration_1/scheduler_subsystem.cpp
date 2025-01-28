@@ -32,7 +32,7 @@ void SchedulerSubsystem::processTask()
 {
     unique_lock<mutex> lock(schedulerMutex);
 
-    while (!completed || !schedulerQueue.empty()) 
+    while (!schedulerQueue.empty()) 
     { 
         schedulerCV.wait(lock, [this] { return !schedulerQueue.empty() || completed; });
 
