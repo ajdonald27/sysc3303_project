@@ -22,7 +22,7 @@ void SchedulerSubsystem::addToQueue(FloorRequest& req)
 
     schedulerQueue.push(req); 
     // printout for message received and sending request to the right user.
-    Logger::logSchedulerTask("Task added to queue: Floor " + to_string(req.floorNumber) + ", Direction" + req.direction); 
+    Logger::logSchedulerTask("Task added to queue: Floor " + to_string(req.floorNumber) + ", Direction " + req.direction); 
 
     ready = true; 
     schedulerCV.notify_one(); 
