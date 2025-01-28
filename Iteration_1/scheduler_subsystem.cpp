@@ -10,7 +10,7 @@
 using namespace std;
 
 
-SchedulerSubsystem::SchedulerSubsystem(ElevatorSubsystem& elevator)  : elevatorSubsystem(elevator), ready(false) {}
+SchedulerSubsystem::SchedulerSubsystem(ElevatorSubsystem& elevator)  : elevatorSubsystem(elevator), ready(false), completed(false) {}
 
 
 void SchedulerSubsystem::addToQueue(FloorRequest& req)
@@ -29,14 +29,24 @@ void SchedulerSubsystem::addToQueue(FloorRequest& req)
     }
 
 void SchedulerSubsystem::processTask()
-    {
-    // scheduler waits on the mutex, then checks if the queue is empty or not 
-    unique_lock<mutex> lock(schedulerMutex); 
-    schedulerCV.wait(lock, [this]{ return !schedulerQueue.empty();});
+{
+    unique_lock<mutex> lock(schedulerMutex);
 
-    FloorRequest req = schedulerQueue.front();
-    schedulerQueue.pop(); 
+    while (!completed || !schedulerQueue.empty()) 
+    { 
+        schedulerCV.wait(lock, [this] { return !schedulerQueue.empty() || completed; });
 
-    elevatorSubsystem.receiveRequest(req); 
+        if (schedulerQueue.empty()) {
+            completed = true; 
+            break;
+        }
 
+        FloorRequest req = schedulerQueue.front();
+        schedulerQueue.pop();
+        elevatorSubsystem.receiveRequest(req);
+    }
+}
+bool SchedulerSubsystem::isQueueEmpty()
+{
+    return schedulerQueue.empty(); 
 }

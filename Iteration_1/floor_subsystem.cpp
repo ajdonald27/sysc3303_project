@@ -20,31 +20,31 @@ FloorSubsystem::FloorSubsystem(SchedulerSubsystem& scheduler) : schedulerSub(sch
 
 void FloorSubsystem::readRequest_SendScheduler()
 {
+    ifstream file("trace.txt");
+    string line;
+    bool read = false;
+    while (getline(file, line)) {
+        
+        // parsing the data from the trace file 
+        istringstream iss(line);
+        string time, floor, direction, button;
+        iss >> time >> floor >> direction >> button;
 
-    ifstream file("trace.txt"); 
-    string line; 
-
-    while(getline(file, line))
-    {
-            // get the data about the floor request from the file 
-        istringstream iss(line); 
-        string time, floor, direction, button; 
-        iss >> time >> floor >> direction >> button; 
-
-
-        // convert / create a new request based on the read data 
+        // convert and create a new request
         FloorRequest req = {stoi(floor), direction, stoi(button)};
-
                 
-        Logger::logFloorTask("Task added to queue: " + floor + ", Direction " + direction); 
-
-
-        // add new req to the queue and notify 
-        schedulerSub.addToQueue(req); 
+        Logger::logFloorTask("Task added to queue: " + floor + ", Direction " + direction);
+        schedulerSub.addToQueue(req);
     }
 
     file.close();
+    read = true;
+    // After adding all tasks notify the scheduler to process them
+    if (read && schedulerSub.isQueueEmpty()) {
+        schedulerSub.completed = true; 
+    }
 }
+
 
 void receiveRequest(FloorRequest& req)
 {

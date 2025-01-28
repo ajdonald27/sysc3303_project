@@ -26,7 +26,7 @@ int main()
 
     thread schedulerThread([&]
     {
-        while(true)
+        while(!schedulerSub.isQueueEmpty() || !schedulerSub.completed)
         {
             schedulerSub.processTask();
         }
@@ -35,7 +35,11 @@ int main()
     thread elevatorThread([&]
     {
         while(true)
-        {
+        {   
+            if(schedulerSub.isQueueEmpty() && schedulerSub.completed)
+            {
+                break;
+            }
             // this thread is just processing tasks for the SchedulerSubsystem 
             // Meaning, for this sim each request is processed sequentially through the SchedulerSub's processTask method.
         }
@@ -44,4 +48,5 @@ int main()
     schedulerThread.join();
     elevatorThread.join();
 
+    cout << "All tasks completed, program terminating" << endl; 
 }

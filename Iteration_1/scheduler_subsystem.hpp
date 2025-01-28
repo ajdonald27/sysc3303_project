@@ -21,13 +21,16 @@ class SchedulerSubsystem {
 
         void addToQueue(FloorRequest &req);
         void processTask(); 
+        bool isQueueEmpty(); 
 
+        bool completed; 
     private:
         mutex schedulerMutex;
         queue<FloorRequest> schedulerQueue;
         condition_variable schedulerCV; 
         ElevatorSubsystem& elevatorSubsystem; 
         bool ready; 
+        
 };
 #endif
 
