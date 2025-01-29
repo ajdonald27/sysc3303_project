@@ -1,3 +1,9 @@
+/**
+ * SYSC3303 - Project Iteration 1 : Header File
+ * Authors: Aj Donald, Adam Sultan
+ * Date: January 28th, 2025
+ */
+
 #ifndef MONITOR_IMPLEMENTATION_HPP
 #define MONITOR_IMPLEMENTATION_HPP
 
@@ -14,12 +20,13 @@
 
 using namespace std;
 
-// Task structure to store floor number and direction
+// structure to process tasks from a trace file
 struct Task {
     int floorNumber;
     string direction;
 };
 
+// class definition for the monitor
 class Monitor {
 public:
     Monitor();
@@ -27,6 +34,7 @@ public:
     void elevator();
     queue<Task> taskQueue;
 
+// class attributes 
 private:
     mutex mtx;
     condition_variable condv;

@@ -1,6 +1,11 @@
+/**
+* SYSC3303 - Project Iteration 1: Elevator 
+* Authors: Aj Donald, Adam Sultan, XX
+* Date : January 28th, 2025
+*/
 #include "monitor_implementation.hpp"
 
-// Constructor
+// class constructor 
 Monitor::Monitor() : done(false) {}
 
 // Scheduler function
@@ -8,6 +13,7 @@ void Monitor::scheduler(const string& filename) {
     ifstream file(filename);
     string line;
 
+    // parse the trace file (.txt)
     while (getline(file, line)) {
         if (done) break;
 
@@ -36,9 +42,11 @@ void Monitor::scheduler(const string& filename) {
     condv.notify_all();
 }
 
-// Elevator function
+// elevator function
 void Monitor::elevator() {
+    // infinite loop for processing requests
     while (true) {
+        // 
         unique_lock<mutex> lock(mtx);
         condv.wait(lock, [this] { return !taskQueue.empty() || done; });
 
@@ -46,32 +54,36 @@ void Monitor::elevator() {
             break;
         }
 
+    // bring to the front of the queue, then remove it once processed
         Task task = taskQueue.front();
         taskQueue.pop();
 
         cout << "Elevator is processing task for Floor: " << task.floorNumber
              << ", Direction: " << task.direction << endl;
 
+        // add 1 second delay
         this_thread::sleep_for(chrono::seconds(1));
 
+        
         cout << "Elevator completed task for Floor: " << task.floorNumber << endl;
 
         condv.notify_all();
     }
 
-    cout << "All tasks completed. Program terminating." << endl;
+    cout << "All tasks completed. Program terminating" << endl;
 }
 
-// Main function
+// main function 
+// guard for unit tests.
 #ifndef UNIT_TESTING
 int main() {
     Monitor monitor;
 
-    // Create the scheduler and elevator threads
-    thread schedulerThread(&Monitor::scheduler, &monitor, "trace.txt"); // Assuming "trace.txt" is your input file
+    // creating the scheduler / input threads
+    thread schedulerThread(&Monitor::scheduler, &monitor, "trace.txt");
     thread elevatorThread(&Monitor::elevator, &monitor);
 
-    // Wait for both threads to finish
+    // wait for threads to finish
     schedulerThread.join();
     elevatorThread.join();
 
