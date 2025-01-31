@@ -1,0 +1,4 @@
+Effectively all tasks throughout this project iteration were completed in a group, together. 
+Meaning, regardless of it being Test definition, execution or the development of the 
+implementation, each group member work together in each of these deliverables. Hence, 
+it's difficult to pinpoint exactly who is responsible for a given file. 
