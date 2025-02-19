@@ -1,3 +1,9 @@
+/**
+ * SYSC3303 - Project Iteration 2
+ * Authors: Jayven Larsen, Aj Donald
+ * Date: February 16th, 2025
+ */
+
 #include "monitor_implementation.hpp"
 Scheduler::Scheduler() : currentSchedulerState(SchedulerState::IDLE), done(false) {}
 
@@ -103,12 +109,13 @@ void Elevator::run() {
 
 #ifndef UNIT_TESTING
 int main() {
+    // create instances of both a scheduler and an elevator
     Scheduler scheduler;
     Elevator elevator(scheduler);
 
+    // create the threads + join them 
     thread schedulerThread(&Scheduler::processRequests, &scheduler, "trace.txt");
     thread elevatorThread(&Elevator::run, &elevator);
-
     schedulerThread.join();
     elevatorThread.join();
 
