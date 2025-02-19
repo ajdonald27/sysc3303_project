@@ -1,0 +1,15 @@
+Test Instructions - SYSC3303 Project Iteration 2
+Group 7 
+
+
+There are two methods in which test can be run, either manually or via bash script. 
+
+1. Running Tests Manually. 
+Compile tests using this command : 
+g++ -std=c++11 -DUNIT_TESTING unit_tests.cpp monitor_implementation.cpp -o unit_tests -pthread
+Run the executable: 
+./unit_tests
+
+2. Run via bash_script. (Make sure you're in the correct directory)
+
+run ./test.sh in terminal 
