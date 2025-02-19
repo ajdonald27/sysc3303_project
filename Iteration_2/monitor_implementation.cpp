@@ -1,13 +1,18 @@
 #include "monitor_implementation.hpp"
 Scheduler::Scheduler() : currentSchedulerState(SchedulerState::IDLE), done(false) {}
 
-void Scheduler::processRequests(const string& filename) {
+void Scheduler::processRequests(const string& filename) 
+{
+
+    // get the file to parse the data 
     ifstream file(filename);
     string line;
 
+    // loop over the file 
     while (getline(file, line)) {
         if (done) break;
 
+        // variable declarations
         stringstream ss(line);
         string timestamp;
         int floorNumber;
@@ -35,6 +40,7 @@ void Scheduler::processRequests(const string& filename) {
     condv.notify_all();
 }
 
+// helper function to get the next task
 Task Scheduler::getNextTask() {
     lock_guard<mutex> lock(mtx);
     if (taskQueue.empty()) return {-1, "", -1};
@@ -58,9 +64,11 @@ bool Scheduler::hasTasks() {
     return !taskQueue.empty();
 }
 
+// elevator subsystem
 Elevator::Elevator(Scheduler& scheduler) : scheduler(scheduler), currentElevatorState(ElevatorState::IDLE), currentFloor(0) {}
 
 void Elevator::run() {
+    // indefinite loop 
     while (true) {
         unique_lock<mutex> lock(mtx);
         scheduler.condv.wait(lock, [this] { return scheduler.hasTasks() || scheduler.done; });
@@ -98,7 +106,7 @@ int main() {
     Scheduler scheduler;
     Elevator elevator(scheduler);
 
-    thread schedulerThread(&Scheduler::processRequests, &scheduler, "test_trace.txt");
+    thread schedulerThread(&Scheduler::processRequests, &scheduler, "trace.txt");
     thread elevatorThread(&Elevator::run, &elevator);
 
     schedulerThread.join();

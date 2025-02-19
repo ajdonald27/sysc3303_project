@@ -49,8 +49,8 @@ private:
     condition_variable condv;
     SchedulerState state;
     bool done;
-
-    friend class Elevator; // Allow Elevator to access private members
+    // allow Elevator to access private members
+    friend class Elevator; 
 };
 
 // Elevator class to handle movement
