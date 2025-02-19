@@ -24,7 +24,7 @@ void Scheduler::processRequests(const string& filename) {
             currentSchedulerState = SchedulerState::ASSIGNING_TASK;
         }
 
-        
+        condv.notify_one();
         cout << "[Scheduler] New Task Added: " << timestamp << " Floor " << floorNumber << " (" << direction << ") Priority: " << priority << endl;
     }
 
@@ -32,7 +32,7 @@ void Scheduler::processRequests(const string& filename) {
         lock_guard<mutex> lock(mtx);
         done = true;
     }
-    
+    condv.notify_all();
 }
 
 Task Scheduler::getNextTask() {
@@ -50,7 +50,7 @@ void Scheduler::notifyElevator() {
     cout << "[Scheduler] Elevator has arrived at a floor." << endl;
 
     currentSchedulerState = taskQueue.empty() ? SchedulerState::IDLE : SchedulerState::ASSIGNING_TASK;
-    
+    condv.notify_one();
 }
 
 bool Scheduler::hasTasks() {
