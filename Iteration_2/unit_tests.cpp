@@ -31,17 +31,15 @@
          testFile << "12:00:05 5 DOWN 2\n";
      }
  
-     // Launch the scheduler thread to read from the test file
+     // create a scheduler thread 
      thread schedulerThread(&Scheduler::processRequests, &scheduler, "test_trace.txt");
  
-     // Let the scheduler add tasks (some delay so it can read from file)
+     // add some delay so we can read from the file
      this_thread::sleep_for(chrono::milliseconds(500));
  
-     // Since processRequests loops until file ends, we can join
      schedulerThread.join();
  
-     // Check if the queue was populated
-     // (We can't access the queue directly, but we have hasTasks())
+     // check if the queue was populated
      assert(scheduler.hasTasks() && "Scheduler queue should not be empty after adding tasks.");
      cout << "Test Passed: Scheduler adds tasks correctly." << endl;
  }
