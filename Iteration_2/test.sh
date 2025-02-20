@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo Running trace.txt test
-g++ monitor_implementation.cpp -o elevator
+g++ -std=c++11 monitor_implementation.cpp -o elevator
 ./elevator
 
 echo Running Unit Tests
