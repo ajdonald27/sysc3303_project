@@ -6,5 +6,5 @@ g++ -std=c++11 monitor_implementation.cpp -o elevator
 
 echo Running Unit Tests
 
-g++ -DUNIT_TESTING unit_tests.cpp monitor_implementation.cpp -o unit_tests -pthread
+g++ -std=c++11 -DUNIT_TESTING unit_tests.cpp monitor_implementation.cpp -o unit_tests -pthread
 ./unit_tests
