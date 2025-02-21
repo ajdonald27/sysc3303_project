@@ -13,3 +13,10 @@ Run the executable:
 2. Run via bash_script. (Make sure you're in the correct directory)
 
 run ./test.sh in terminal 
+
+Running Program Manually. 
+Compile program using this command: 
+g++ -std=c++11 monitor_implementation.cpp -o run
+Run the executable: 
+./run
+

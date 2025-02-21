@@ -1,4 +1,4 @@
-SYSC3303 - Project Iteration 1 
+SYSC3303 - Project Iteration 2
 Group 7
 Date: February 16th , 2025
 Members: Aj Donald, Adam Sultan, Jayven Larsen, David Hos, Sami Kasouha. 

@@ -1,7 +1,7 @@
 /**
  * SYSC3303 - Project Iteration 2 
  * Unit test file 
- * Authors: Aj Donald, XX
+ * Authors: Aj Donald, Adam Sultan, David Hos
  * Date: February 16th, 2025
  */
 
