@@ -2,7 +2,7 @@
 
 echo Running trace.txt test
 g++ -std=c++11 monitor_implementation.cpp -o run
-./elevator
+./run
 
 echo Running Unit Tests
 
