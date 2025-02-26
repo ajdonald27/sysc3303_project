@@ -1,0 +1,11 @@
+Effectively all tasks throughout this project iteration were completed in a group, together. 
+Meaning, regardless of it being Test definition, execution or the development of the 
+implementation, each group member work together in each of these deliverables. Hence, 
+it's difficult to pinpoint exactly who is responsible for a given file. 
+
+If it's absolutely necessary to attribute who did particular tasks, here's the breakdown.
+
+Code Implementation / Design : Jayven Larsen, Aj Donald 
+Unit Test Development : Adam Sultan, David Hos
+UML/State Diagrams: Aj Donald, Sami Kasouha
+Validation & Verification (debugging and testing): David Hos, Jayven Larsen, Adam Sultan
