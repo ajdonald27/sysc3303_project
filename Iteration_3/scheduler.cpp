@@ -1,5 +1,3 @@
-// scheduler.cpp
-
 /**
  * SYSC3303 - Project Iteration 3
  * Authors: Aj Donald, Jayven Larsen
@@ -93,9 +91,16 @@ private:
             iss >> floor >> direction >> destination;
             std::cout << "[Scheduler] Processing floor request from floor " << floor 
                       << " going " << direction << " to " << destination << "\n";
-            // For demonstration, assign elevator 1 for all requests.
-            std::string command = "ASSIGN_ELEVATOR 1 " + std::to_string(floor);
-            sendCommand(command, "127.0.0.1", htons(8001));
+            // For demonstration, alternate between elevator 1 and 2.
+            static int lastAssigned = 0;
+            int numElevators = 2; // for demo purposes
+            int assignedElevator = (lastAssigned % numElevators) + 1;
+            lastAssigned++;
+
+            std::string command = "ASSIGN_ELEVATOR " + std::to_string(assignedElevator) 
+                                  + " " + std::to_string(destination);
+            int elevatorPort = (assignedElevator == 1) ? 8001 : 8002;
+            sendCommand(command, "127.0.0.1", htons(elevatorPort));
         } else if (type == "ELEVATOR_STATUS") {
             int elevatorId, currentFloor;
             std::string status;
@@ -103,6 +108,9 @@ private:
             std::cout << "[Scheduler] Elevator " << elevatorId << " is at floor " 
                       << currentFloor << " (" << status << ")\n";
             // Additional scheduling logic would be added here.
+        } else if (type == "TERMINATE") {
+            std::cout << "[Scheduler] Received termination signal. Shutting down.\n";
+            running = false;
         }
     }
 
@@ -114,7 +122,7 @@ private:
             DatagramPacket packet(data, data.size(), inet_addr(address.c_str()), port);
             udpSocket.send(packet);
             std::cout << "[Scheduler] Sent command: " << command 
-                      << " to " << address << ":" << port << "\n";
+                      << " to " << address << ":" << ntohs(port) << "\n";
         } catch (const std::exception &e) {
             std::cerr << "[Scheduler] Send error: " << e.what() << "\n";
         }

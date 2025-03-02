@@ -1,8 +1,6 @@
-// floor.cpp
-
 /**
  * SYSC3303 - Project Iteration 3 
- * Author : Aj Donald 101259149, Jayven Larsen 101260364
+ * Authors: Aj Donald, Jayven Larsen
  * Date: March 2nd, 2025 
  */
 #include "Datagram.h"
