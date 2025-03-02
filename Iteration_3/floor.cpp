@@ -1,9 +1,9 @@
 // floor.cpp
 
 /**
- * SYSC3303 - Project Iteration 3
- * Authors: Aj Donald, Jayven Larsen
- * Date: March 2nd, 2025
+ * SYSC3303 - Project Iteration 3 
+ * Author : Aj Donald 101259149, Jayven Larsen 101260364
+ * Date: March 2nd, 2025 
  */
 #include "Datagram.h"
 #include <iostream>
@@ -62,6 +62,10 @@ private:
             // Simulate real-time by waiting a short period between requests.
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
+        // After processing all entries, send a termination signal.
+        sendTermination();
+        running = false;
+        std::cout << "[Floor " << floorNumber << "] Finished processing trace file. Terminating.\n";
     }
 
     // Send a floor request to the Scheduler.
@@ -80,6 +84,20 @@ private:
         }
         state = FloorState::IDLE;
     }
+
+    // Send a termination message to the Scheduler.
+    void sendTermination() {
+        try {
+            DatagramSocket udpSocket;
+            std::string term = "TERMINATE";
+            std::vector<uint8_t> data(term.begin(), term.end());
+            DatagramPacket packet(data, data.size(), InetAddress::getLocalHost(), htons(8000));
+            udpSocket.send(packet);
+            std::cout << "[Floor " << floorNumber << "] Sent termination signal.\n";
+        } catch (const std::exception &e) {
+            std::cerr << "[Floor " << floorNumber << "] Termination send error: " << e.what() << "\n";
+        }
+    }
 };
 
 int main() {
@@ -87,5 +105,6 @@ int main() {
     Floor floor(1);
     floor.start();
     floor.join();
+    std::cout << "[Floor 1] Exiting program.\n";
     return 0;
 }
