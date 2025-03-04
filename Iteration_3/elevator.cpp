@@ -52,6 +52,7 @@ private:
                 std::cout << "[Elevator " << elevatorId << "] Received: " << msg << "\n";
                 processCommand(msg);
             }
+            std::cout << "[Elevator " << elevatorId << "] Listener loop terminated.\n";
         } catch (const std::exception &e) {
             std::cerr << "[Elevator " << elevatorId << "] Listener exception: " << e.what() << "\n";
         }
@@ -61,14 +62,29 @@ private:
         std::istringstream iss(command);
         std::string type;
         iss >> type;
+        // Check for shutdown command.
+        if (type == "SHUTDOWN") {
+            {
+                std::lock_guard<std::mutex> lock(stateMutex);
+                std::cout << "[Elevator " << elevatorId << "] Shutdown command received. Terminating listener.\n";
+                running = false;
+            }
+            return;
+        }
         if (type == "ASSIGN_ELEVATOR") {
             int id, targetFloor;
             iss >> id >> targetFloor;
             if (id == elevatorId) {
-                std::cout << "[Elevator " << elevatorId << "] Command received to go to floor " 
-                          << targetFloor << "\n";
-                // Launch a thread to simulate movement.
-                std::thread(&Elevator::moveToFloor, this, targetFloor).detach();
+                std::lock_guard<std::mutex> lock(stateMutex);
+                if (state == ElevatorState::IDLE) {
+                    std::cout << "[Elevator " << elevatorId << "] Command received to go to floor " 
+                              << targetFloor << "\n";
+                    // Launch a thread to simulate movement.
+                    std::thread(&Elevator::moveToFloor, this, targetFloor).detach();
+                } else {
+                    std::cout << "[Elevator " << elevatorId << "] Busy (current state not IDLE). Ignoring command for floor " 
+                              << targetFloor << "\n";
+                }
             }
         }
     }
@@ -83,7 +99,10 @@ private:
             std::this_thread::sleep_for(std::chrono::seconds(1));
             {
                 std::lock_guard<std::mutex> lock(stateMutex);
-                currentFloor += (currentFloor < floor ? 1 : -1);
+                if (currentFloor < floor)
+                    currentFloor++;
+                else if (currentFloor > floor)
+                    currentFloor--;
                 std::cout << "[Elevator " << elevatorId << "] Moving... Current floor: " 
                           << currentFloor << "\n";
             }
@@ -108,6 +127,7 @@ private:
             std::string update = "ELEVATOR_STATUS " + std::to_string(elevatorId) + " " +
                                  std::to_string(currentFloor) + " " + status;
             std::vector<uint8_t> data(update.begin(), update.end());
+            // Change InetAddress::getLocalHost() if you need a different destination IP.
             DatagramPacket packet(data, data.size(), InetAddress::getLocalHost(), htons(8000));
             udpSocket.send(packet);
             std::cout << "[Elevator " << elevatorId << "] Sent status: " << update << "\n";
@@ -117,7 +137,6 @@ private:
     }
 };
 
-// New main function that starts two Elevator instances concurrently.
 int main() {
     // Create two elevators:
     // Elevator 1 with id 1, starting at floor 0, listening on port 8001.
@@ -128,8 +147,10 @@ int main() {
     elevator1.start();
     elevator2.start();
 
+    // Wait for the elevators to finish (they now run indefinitely until a shutdown command is received).
     elevator1.join();
     elevator2.join();
 
+    std::cout << "All elevators terminated. Exiting.\n";
     return 0;
 }

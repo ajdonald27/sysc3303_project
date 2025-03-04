@@ -1,7 +1,7 @@
 /**
  * SYSC3303 - Project Iteration 3
  * Authors: Aj Donald, Jayven Larsen
- * Date: March 2nd, 2025
+ * Updated: [Your Date]
  */
 #include "Datagram.h"
 #include <iostream>
@@ -109,8 +109,8 @@ private:
                       << currentFloor << " (" << status << ")\n";
             // Additional scheduling logic would be added here.
         } else if (type == "TERMINATE") {
-            std::cout << "[Scheduler] Received termination signal. Shutting down.\n";
-            running = false;
+            // Log termination requests without shutting down
+            std::cout << "[Scheduler] Received TERMINATE signal. Ignoring and staying active.\n";
         }
     }
 
