@@ -28,3 +28,16 @@ Note:
   - To run on different computers, update the IP addresses in the sendCommand functions accordingly.
   - the trace.txt file is read by the floor subsystem to simulate elevator requests. 
   - Refactored the code from iteration 3 to have a floor subsystem aswell. 
+
+
+RUNNING USING MULTIPLE HOST: 
+
+In different the different programs, you will make a similar change .
+1. In floor.cpp: Change line 74 "            DatagramPacket packet(data, data.size(), InetAddress::getLocalHost(), htons(8000));
+" 
+Change InetAddress::getLocalHost --> the scheduler IP Address 
+
+2. In elevator.cpp: Change Line 131 DatagramPacket packet(data, data.size(), InetAddress::getLocalHost(), htons(8000));
+
+
+Change InetAddress::getLocalHost --> the IP Address you wish.
