@@ -1,7 +1,7 @@
 /**
  * SYSC3303 - Project Iteration 3
  * Authors: Aj Donald, Jayven Larsen
- * Updated: [Your Date]
+ * March 2nd, 2025
  */
 #include "Datagram.h"
 #include <iostream>
@@ -11,7 +11,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <vector>
-#include <arpa/inet.h>  // for htons()
+#include <arpa/inet.h>
 
 enum class SchedulerState { IDLE, ASSIGNING, WAITING };
 

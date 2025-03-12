@@ -1,7 +1,7 @@
 /**
  * SYSC3303 - Project Iteration 3
  * Authors: Aj Donald, Jayven Larsen
- * Updated: [Your Date]
+ * March 2nd, 2025
  */
 #include "Datagram.h"
 #include <iostream>
@@ -71,7 +71,7 @@ private:
         try {
             DatagramSocket udpSocket;
             std::vector<uint8_t> data(request.begin(), request.end());
-            DatagramPacket packet(data, data.size(), InetAddress::getLocalHost(), htons(8000));
+            DatagramPacket packet(data, data.size(),InetAddress::getLocalHost(), htons(8000));
             udpSocket.send(packet);
             std::cout << "[Floor " << floorNumber << "] Sent request: " << request << "\n";
         } catch (const std::exception &e) {
@@ -82,7 +82,7 @@ private:
 };
 
 int main() {
-    // For demonstration, simulate floor 1.
+    
     Floor floor(1);
     floor.start();
     floor.join();

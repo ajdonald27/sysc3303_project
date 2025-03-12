@@ -22,7 +22,7 @@ public:
 
     ~Elevator() { running = false; }
 
-    // Start the thread that listens for UDP commands.
+    // start the thread to listens for UDP
     void start() {
         listenerThread = std::thread(&Elevator::listenerLoop, this);
     }
@@ -36,7 +36,7 @@ private:
     int currentFloor;
     ElevatorState state;
     bool running;
-    int port;  // Each elevator listens on its own port.
+    int port;  
     std::mutex stateMutex;
     std::thread listenerThread;
 
@@ -79,7 +79,7 @@ private:
                 if (state == ElevatorState::IDLE) {
                     std::cout << "[Elevator " << elevatorId << "] Command received to go to floor " 
                               << targetFloor << "\n";
-                    // Launch a thread to simulate movement.
+                    // launch a thread to simulate movement.
                     std::thread(&Elevator::moveToFloor, this, targetFloor).detach();
                 } else {
                     std::cout << "[Elevator " << elevatorId << "] Busy (current state not IDLE). Ignoring command for floor " 
@@ -138,7 +138,6 @@ private:
 };
 
 int main() {
-    // Create two elevators:
     // Elevator 1 with id 1, starting at floor 0, listening on port 8001.
     // Elevator 2 with id 2, starting at floor 0, listening on port 8002.
     Elevator elevator1(1, 0, 8001);
