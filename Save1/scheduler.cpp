@@ -103,22 +103,42 @@ private:
             sendCommand(command, "127.0.0.1", htons(elevatorPort));
         } 
         // Handle Faults
-        else if (type == "FAULT") {
-            std::string faultType;
-            int floor;
-            iss >> faultType >> floor;
-            std::cout << "[Scheduler] Handling fault: " << faultType << " on floor " << floor << "\n";
-            // Forward fault to the appropriate elevator
-            std::string command = "FAULT " + faultType + " " + std::to_string(floor);
-            int elevatorPort = (floor % 2 == 1) ? 8001 : 8002; // Assign to elevator 1 or 2 based on floor
+        else if (type == "STUCK_ELEVATOR") {
+            int elevator, floor1, floor2;
+            iss >> elevator >> floor1 >> floor2;
+            std::cout << "[Scheduler] Handling STUCK_ELEVATOR: Elevator " 
+                      << elevator << " stuck between floors " << floor1 << " and " << floor2 << "\n";
+            // Command to elevator to stop or handle stuck situation
+            std::string command = "ELEVATOR_STOP " + std::to_string(elevator);
+            int elevatorPort = (elevator == 1) ? 8001 : 8002;
             sendCommand(command, "127.0.0.1", htons(elevatorPort));
         } 
-        else if (type == "ELEVATOR_STATUS") {
+        else if (type == "SENSOR_FAILURE") {
+            int floor;
+            iss >> floor;
+            std::cout << "[Scheduler] Handling SENSOR_FAILURE on floor " << floor << "\n";
+            // Inform the floor to handle sensor failure 
+            std::string command = "SENSOR_RESET " + std::to_string(floor);
+            int elevatorPort = 8000; // Send to the floor subsystem (port 8000)
+            sendCommand(command, "127.0.0.1", htons(elevatorPort));
+        } 
+        else if (type == "DOOR_FAILURE") {
+            int floor;
+            iss >> floor;
+            std::cout << "[Scheduler] Handling DOOR_FAILURE on floor " << floor << "\n";
+            // Command to elevator to reset door (or handle door failure)
+            std::string command = "DOOR_RESET " + std::to_string(floor);
+            int elevatorPort = 8001; // Default to elevator 1 (port 8001)
+            sendCommand(command, "127.0.0.1", htons(elevatorPort));
+        } else if (type == "ELEVATOR_STATUS") {
             int elevatorId, currentFloor;
             std::string status;
             iss >> elevatorId >> currentFloor >> status;
             std::cout << "[Scheduler] Elevator " << elevatorId << " is at floor " 
                       << currentFloor << " (" << status << ")\n";
+        } else if (type == "TERMINATE") {
+            // Log termination requests without shutting down
+            std::cout << "[Scheduler] Received TERMINATE signal. Ignoring and staying active.\n";
         }
     }
 

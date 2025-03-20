@@ -127,87 +127,88 @@
  
      // Simulate moving to a floor.
      void moveToFloor(int floor) {
-        {
-            std::lock_guard<std::mutex> lock(stateMutex);
-            state = ElevatorState::MOVING;
-        }
-        auto startTime = std::chrono::steady_clock::now();
-    
-        while (currentFloor != floor && running) {
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-            {
-                std::lock_guard<std::mutex> lock(stateMutex);
-                auto currentTime = std::chrono::steady_clock::now();
-                auto elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count();
-    
-                // Check for movement timeout (hard fault)
-                if (elapsedTime > (abs(floor - currentFloor) * TIME_PER_FLOOR + FAULT_THRESHOLD)) {
-                    state = ElevatorState::STUCK;
-                    std::cout << "[Elevator " << elevatorId << "] Stuck at floor " << currentFloor << "!\n";
-                    sendStatus("STUCK");
-                    return; // Stop movement
-                }
-    
-                if (currentFloor < floor)
-                    currentFloor++;
-                else if (currentFloor > floor)
-                    currentFloor--;
-                std::cout << "[Elevator " << elevatorId << "] Moving... Current floor: " 
-                          << currentFloor << "\n";
-            }
-            sendStatus("MOVING");
-        }
-        {
-            std::lock_guard<std::mutex> lock(stateMutex);
-            state = ElevatorState::ARRIVED;
-            std::cout << "[Elevator " << elevatorId << "] Arrived at floor " << currentFloor << "\n";
-        }
-        sendStatus("ARRIVED");
-    
-        // Simulate door operation
-        openDoors();
-        closeDoors();
-    
-        {
-            std::lock_guard<std::mutex> lock(stateMutex);
-            state = ElevatorState::IDLE;
-        }
-    }
+         {
+             std::lock_guard<std::mutex> lock(stateMutex);
+             state = ElevatorState::MOVING;
+         }
+         auto startTime = std::chrono::steady_clock::now();
+ 
+         while (currentFloor != floor && running) {
+             std::this_thread::sleep_for(std::chrono::seconds(1));
+             {
+                 std::lock_guard<std::mutex> lock(stateMutex);
+                 auto currentTime = std::chrono::steady_clock::now();
+                 auto elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count();
+ 
+                 // Check for movement timeout (hard fault)
+                 if (elapsedTime > (abs(floor - currentFloor) * TIME_PER_FLOOR + FAULT_THRESHOLD)) {
+                     state = ElevatorState::STUCK;
+                     std::cout << "[Elevator " << elevatorId << "] Stuck at floor " << currentFloor << "!\n";
+                     sendStatus("STUCK");
+                     return; // Stop movement
+                 }
+ 
+                 if (currentFloor < floor)
+                     currentFloor++;
+                 else if (currentFloor > floor)
+                     currentFloor--;
+                 std::cout << "[Elevator " << elevatorId << "] Moving... Current floor: " 
+                           << currentFloor << "\n";
+             }
+             sendStatus("MOVING");
+         }
+         {
+             std::lock_guard<std::mutex> lock(stateMutex);
+             state = ElevatorState::ARRIVED;
+             std::cout << "[Elevator " << elevatorId << "] Arrived at floor " << currentFloor << "\n";
+         }
+         sendStatus("ARRIVED");
+ 
+         // Simulate door operation
+         openDoors();
+         closeDoors();
+ 
+         {
+             std::lock_guard<std::mutex> lock(stateMutex);
+             state = ElevatorState::IDLE;
+         }
+     }
  
      // Simulate opening doors.
      void openDoors() {
-        auto startTime = std::chrono::steady_clock::now();
-        std::this_thread::sleep_for(std::chrono::seconds(DOOR_OPEN_TIME));
-    
-        auto currentTime = std::chrono::steady_clock::now();
-        auto elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count();
-    
-        if (elapsedTime > DOOR_OPEN_TIME + FAULT_THRESHOLD) {
-            std::lock_guard<std::mutex> lock(stateMutex);
-            state = ElevatorState::DOOR_FAILURE;
-            std::cout << "[Elevator " << elevatorId << "] Door stuck open at floor " << currentFloor << "!\n";
-            sendStatus("DOOR_FAILURE");
-        } else {
-            std::cout << "[Elevator " << elevatorId << "] Doors opened.\n";
-        }
-    }
-    
-    void closeDoors() {
-        auto startTime = std::chrono::steady_clock::now();
-        std::this_thread::sleep_for(std::chrono::seconds(DOOR_CLOSE_TIME));
-    
-        auto currentTime = std::chrono::steady_clock::now();
-        auto elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count();
-    
-        if (elapsedTime > DOOR_CLOSE_TIME + FAULT_THRESHOLD) {
-            std::lock_guard<std::mutex> lock(stateMutex);
-            state = ElevatorState::DOOR_FAILURE;
-            std::cout << "[Elevator " << elevatorId << "] Door stuck closed at floor " << currentFloor << "!\n";
-            sendStatus("DOOR_FAILURE");
-        } else {
-            std::cout << "[Elevator " << elevatorId << "] Doors closed.\n";
-        }
-    }
+         auto startTime = std::chrono::steady_clock::now();
+         std::this_thread::sleep_for(std::chrono::seconds(DOOR_OPEN_TIME));
+ 
+         auto currentTime = std::chrono::steady_clock::now();
+         auto elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count();
+ 
+         if (elapsedTime > DOOR_OPEN_TIME + FAULT_THRESHOLD) {
+             std::lock_guard<std::mutex> lock(stateMutex);
+             state = ElevatorState::DOOR_FAILURE;
+             std::cout << "[Elevator " << elevatorId << "] Door stuck open at floor " << currentFloor << "!\n";
+             sendStatus("DOOR_FAILURE");
+         } else {
+             std::cout << "[Elevator " << elevatorId << "] Doors opened.\n";
+         }
+     }
+ 
+     // Simulate closing doors.
+     void closeDoors() {
+         auto startTime = std::chrono::steady_clock::now();
+         std::this_thread::sleep_for(std::chrono::seconds(DOOR_CLOSE_TIME));
+ 
+         auto currentTime = std::chrono::steady_clock::now();
+         auto elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count();
+ 
+         if (elapsedTime > DOOR_CLOSE_TIME + FAULT_THRESHOLD) {
+             std::lock_guard<std::mutex> lock(stateMutex);
+             state = ElevatorState::DOOR_FAILURE;
+             std::cout << "[Elevator " << elevatorId << "] Door stuck closed at floor " << currentFloor << "!\n";
+             sendStatus("DOOR_FAILURE");
+         } else {
+             std::cout << "[Elevator " << elevatorId << "] Doors closed.\n";
+         }
+     }
  
      // Send a status update to the Scheduler.
      void sendStatus(const std::string &status) {

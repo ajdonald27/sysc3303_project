@@ -66,7 +66,7 @@ private:
                 }
             }
             // Simulate real-time by waiting a short period between requests.
-            std::this_thread::sleep_for(std::chrono::seconds(5));
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
         std::cout << "[Floor " << floorNumber << "] Finished processing trace file.\n";
     }
