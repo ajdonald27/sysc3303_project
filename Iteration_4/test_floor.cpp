@@ -10,7 +10,6 @@
 
 using namespace std;
 
-// Test function using real trace.txt
 void testFloorTraceProcessing() {
     cout << "Running test: Floor trace + fault injection using provided trace.txt...\n";
 
@@ -24,13 +23,13 @@ void testFloorTraceProcessing() {
     // Let the floor process the trace file
     this_thread::sleep_for(chrono::seconds(10));
 
-    cout << "✔ Floor trace test completed.\n";
+    cout << "Floor trace test completed.\n";
     floorThread.join();
 }
 
 int main() {
-    cout << "=== Floor Subsystem Unit Tests ===\n";
+    cout << "------ Floor Subsystem Unit Tests ------\n";
     testFloorTraceProcessing();
-    cout << "=== All Floor Tests Completed ===\n";
+    cout << "------ All Floor Tests Completed ------\n";
     return 0;
 }

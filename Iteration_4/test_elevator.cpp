@@ -37,7 +37,7 @@ void testElevatorMovement() {
 
     sendTestCommand("SHUTDOWN", 9001);
     t.join();
-    cout << "✔ Elevator movement test completed.\n";
+    cout << "Elevator movement test completed.\n";
 }
 
 void testStuckElevator() {
@@ -50,13 +50,13 @@ void testStuckElevator() {
 
     this_thread::sleep_for(chrono::milliseconds(500));
 
-    // Move to a far floor with artificially low timeout threshold
+    // Move to a far floor with low timeout threshold
     sendTestCommand("ASSIGN_ELEVATOR 1 10", 9002);
     this_thread::sleep_for(chrono::seconds(30)); // Wait for stuck detection
 
     sendTestCommand("SHUTDOWN", 9002);
     t.join();
-    cout << "✔ Stuck elevator fault test completed.\n";
+    cout << "Stuck elevator fault test completed.\n";
 }
 
 void testDoorFailure() {
@@ -73,7 +73,7 @@ void testDoorFailure() {
 
     sendTestCommand("SHUTDOWN", 9003);
     t.join();
-    cout << "✔ Door failure reset test completed.\n";
+    cout << "Door failure reset test completed.\n";
 }
 
 void testSensorFailure() {
@@ -90,15 +90,15 @@ void testSensorFailure() {
 
     sendTestCommand("SHUTDOWN", 9004);
     t.join();
-    cout << "✔ Sensor failure simulation test completed.\n";
+    cout << "Sensor failure simulation test completed.\n";
 }
 
 int main() {
-    cout << "=== Elevator Unit Tests ===\n";
+    cout << "------ Elevator Unit Tests ------\n";
     testElevatorMovement();
     testStuckElevator();
     testDoorFailure();
     testSensorFailure();
-    cout << "=== All Tests Completed ===\n";
+    cout << "------ All Tests Completed ------\n";
     return 0;
 }
