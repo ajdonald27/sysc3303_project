@@ -1,7 +1,7 @@
 /**
- * SYSC3303 - Project Iteration 3
- * Authors: Aj Donald, Jayven Larsen
- * Updated: [Your Date]
+ * SYSC3303 - Project Iteration 4
+ * Authors:David Hos, Aj Donald, Jayven Larsen
+ * Date: March 17th, 2025
  */
 #include "Datagram.h"
 #include <iostream>
