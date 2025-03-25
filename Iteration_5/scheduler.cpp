@@ -206,10 +206,12 @@ private:
         }
     }
 };
- 
+#ifndef UNIT_TEST
+
 int main() {
     Scheduler scheduler;
     scheduler.start();
     scheduler.join();
     return 0;
 }
+#endif

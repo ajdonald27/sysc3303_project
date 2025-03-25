@@ -259,6 +259,9 @@ constexpr int Elevator::DOOR_OPEN_TIME;
 constexpr int Elevator::DOOR_CLOSE_TIME;
 constexpr int Elevator::FAULT_THRESHOLD;
  
+#ifndef UNIT_TEST
+
+
 int main() {
     // Create two elevators:
     // Elevator 1 with id 1, starting at floor 0, listening on port 8001.
@@ -276,3 +279,5 @@ int main() {
     std::cout << "All elevators terminated. Exiting.\n";
     return 0;
 }
+
+#endif

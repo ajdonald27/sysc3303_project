@@ -1,104 +1,51 @@
-/**
- * SYSC3303 - Project Iteration 4
- * Authors: Sami Kasouha
- * Date: March 18th, 2025
- */
-#include "elevator.cpp"
-#include <cassert>
+#include "Datagram.h"
 #include <iostream>
 #include <thread>
 #include <chrono>
-#include <cstring>
 #include <vector>
+#include <arpa/inet.h>
 
-using namespace std;
+// Include the Elevator class (from elevator.cpp)
+// Make sure elevator.cpp is compiled with -DUNIT_TEST so its main() is excluded.
+#include "elevator.cpp"
 
-void sendTestCommand(const string& command, int port) {
-    DatagramSocket udpSocket;
-    vector<uint8_t> data(command.begin(), command.end());
-    DatagramPacket packet(data, data.size(), InetAddress::getLocalHost(), htons(port));
-    udpSocket.send(packet);
-}
-
-void testElevatorMovement() {
-    cout << "Running test: Elevator movement...\n";
-    thread t([]() {
-        Elevator e(1, 0, 9001);
-        e.start();
-        e.join();
-    });
-
-    // Give elevator time to boot up
-    this_thread::sleep_for(chrono::milliseconds(500));
-
-    // Send a move command
-    sendTestCommand("ASSIGN_ELEVATOR 1 3", 9001);
-    this_thread::sleep_for(chrono::seconds(20)); // Wait for elevator to arrive and finish
-
-    sendTestCommand("SHUTDOWN", 9001);
-    t.join();
-    cout << "Elevator movement test completed.\n";
-}
-
-void testStuckElevator() {
-    cout << "Running test: Stuck elevator fault...\n";
-    thread t([]() {
-        Elevator e(1, 0, 9002);
-        e.start();
-        e.join();
-    });
-
-    this_thread::sleep_for(chrono::milliseconds(500));
-
-    // Move to a far floor with low timeout threshold
-    sendTestCommand("ASSIGN_ELEVATOR 1 10", 9002);
-    this_thread::sleep_for(chrono::seconds(30)); // Wait for stuck detection
-
-    sendTestCommand("SHUTDOWN", 9002);
-    t.join();
-    cout << "Stuck elevator fault test completed.\n";
-}
-
-void testDoorFailure() {
-    cout << "Running test: Door failure simulation...\n";
-    thread t([]() {
-        Elevator e(1, 0, 9003);
-        e.start();
-        e.join();
-    });
-
-    this_thread::sleep_for(chrono::milliseconds(500));
-    sendTestCommand("DOOR_RESET 1", 9003);
-    this_thread::sleep_for(chrono::seconds(5));
-
-    sendTestCommand("SHUTDOWN", 9003);
-    t.join();
-    cout << "Door failure reset test completed.\n";
-}
-
-void testSensorFailure() {
-    cout << "Running test: Sensor failure simulation...\n";
-    thread t([]() {
-        Elevator e(1, 0, 9004);
-        e.start();
-        e.join();
-    });
-
-    this_thread::sleep_for(chrono::milliseconds(500));
-    sendTestCommand("SENSOR_RESET 1", 9004);
-    this_thread::sleep_for(chrono::seconds(2));
-
-    sendTestCommand("SHUTDOWN", 9004);
-    t.join();
-    cout << "Sensor failure simulation test completed.\n";
+void sendTestCommand(const std::string &command, int port) {
+    try {
+        DatagramSocket udpSocket;
+        std::vector<uint8_t> data(command.begin(), command.end());
+        DatagramPacket packet(data, data.size(), InetAddress::getLocalHost(), htons(port));
+        udpSocket.send(packet);
+    } catch(const std::exception &e) {
+        std::cerr << "Error sending test command: " << e.what() << std::endl;
+    }
 }
 
 int main() {
-    cout << "------ Elevator Unit Tests ------\n";
-    testElevatorMovement();
-    testStuckElevator();
-    testDoorFailure();
-    testSensorFailure();
-    cout << "------ All Tests Completed ------\n";
+    std::cout << "Starting Elevator Unit Test for Iteration 5 (Capacity and Instrumentation Test)" << std::endl;
+    // Create Elevator instance on test port 9005
+    Elevator testElevator(1, 0, 9005);
+    std::thread elevatorThread([&testElevator](){
+        testElevator.start();
+        testElevator.join();
+    });
+    
+    // Allow the elevator to start
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    
+    // Send 12 ASSIGN_ELEVATOR commands to simulate boarding
+    for (int i = 0; i < 12; i++) {
+        sendTestCommand("ASSIGN_ELEVATOR 1 5", 9005);
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    }
+    
+    // Wait for processing
+    std::this_thread::sleep_for(std::chrono::seconds(10));
+    
+    // Send shutdown command
+    sendTestCommand("SHUTDOWN", 9005);
+    
+    elevatorThread.join();
+    std::cout << "Elevator Unit Test for Iteration 5 completed. Check output for 'Cannot board, capacity full' message and instrumentation data." << std::endl;
+    
     return 0;
 }
