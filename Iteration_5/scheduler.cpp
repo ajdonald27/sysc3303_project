@@ -1,8 +1,9 @@
 /**
  * SYSC3303 - Project Iteration 4
  * Authors:David Hos, Aj Donald, Jayven Larsen
- * Date: March 17th, 2025
+ * Date: March 23rd, 2025
  */
+
 #include "Datagram.h"
 #include <iostream>
 #include <sstream>
@@ -27,7 +28,8 @@ struct ElevatorInfo {
 
 class Scheduler {
 public:
-    Scheduler() : state(SchedulerState::IDLE), running(true), displayRunning(true) {}
+    Scheduler() 
+        : state(SchedulerState::IDLE), running(true), displayRunning(true), nextElevator(1) {}
     ~Scheduler() { running = false; displayRunning = false; }
  
     // Start the receiver, processor, and display threads.
@@ -71,6 +73,9 @@ private:
     std::mutex statusMutex;
  
     std::chrono::steady_clock::time_point startTime;
+    
+    // New member variable for round-robin scheduling.
+    int nextElevator;  // Starts with elevator 1.
  
     void receiveLoop() {
         try {
@@ -119,18 +124,24 @@ private:
             int numElevators = 2;
             int assignedElevator = -1;
             {
+                // Use the statusMutex to safely access both elevatorStatusMap and nextElevator.
                 std::lock_guard<std::mutex> lock(statusMutex);
-                for (int i = 1; i <= numElevators; i++) {
-                    if (elevatorStatusMap.find(i) != elevatorStatusMap.end()) {
-                        ElevatorInfo info = elevatorStatusMap[i];
-                        if (info.occupancy < info.capacity) {
-                            assignedElevator = i;
-                            break;
-                        }
-                    } else {
-                        assignedElevator = i;
+                // Try each elevator in round-robin order.
+                for (int i = 0; i < numElevators; i++) {
+                    int elevatorId = nextElevator;
+                    // Consider the elevator available if we haven't received a status update yet
+                    // or if its occupancy is below its capacity.
+                    if (elevatorStatusMap.find(elevatorId) == elevatorStatusMap.end() || 
+                        elevatorStatusMap[elevatorId].occupancy < elevatorStatusMap[elevatorId].capacity) {
+                        assignedElevator = elevatorId;
                         break;
                     }
+                    // Rotate to the next elevator.
+                    nextElevator = (nextElevator % numElevators) + 1;
+                }
+                // If an elevator is assigned, update nextElevator for the next round.
+                if (assignedElevator != -1) {
+                    nextElevator = (assignedElevator % numElevators) + 1;
                 }
             }
             if (assignedElevator == -1) {
@@ -142,6 +153,9 @@ private:
                 std::this_thread::sleep_for(std::chrono::seconds(2));
                 queueCV.notify_one();
             } else {
+                std::cout << "[Scheduler] Round-robin selection: Elevator " << assignedElevator 
+                          << " assigned for floor request from floor " << floor 
+                          << " to " << destination << ". Next elevator pointer set to " << nextElevator << ".\n";
                 std::string command = "ASSIGN_ELEVATOR " + std::to_string(assignedElevator) 
                                       + " " + std::to_string(destination);
                 int elevatorPort = (assignedElevator == 1) ? 8001 : 8002;
@@ -206,6 +220,7 @@ private:
         }
     }
 };
+ 
 #ifndef UNIT_TEST
 
 int main() {

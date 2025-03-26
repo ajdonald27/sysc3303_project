@@ -1,12 +1,14 @@
+/**
+ * SYSC3303 - Project Iteration 5
+ * Authors: David Hos, Aj Donald, Jayven Larsen
+ * Date: March 23rd, 2025
+ */
 #include "Datagram.h"
 #include <iostream>
 #include <thread>
 #include <chrono>
 #include <vector>
 #include <arpa/inet.h>
-
-// Include the Elevator class (from elevator.cpp)
-// Make sure elevator.cpp is compiled with -DUNIT_TEST so its main() is excluded.
 #include "elevator.cpp"
 
 void sendTestCommand(const std::string &command, int port) {
@@ -22,26 +24,26 @@ void sendTestCommand(const std::string &command, int port) {
 
 int main() {
     std::cout << "Starting Elevator Unit Test for Iteration 5 (Capacity and Instrumentation Test)" << std::endl;
-    // Create Elevator instance on test port 9005
+    // Create Elevator instance on test port 9005 with id 1.
     Elevator testElevator(1, 0, 9005);
     std::thread elevatorThread([&testElevator](){
         testElevator.start();
         testElevator.join();
     });
     
-    // Allow the elevator to start
+    // Allow the elevator to start.
     std::this_thread::sleep_for(std::chrono::seconds(1));
     
-    // Send 12 ASSIGN_ELEVATOR commands to simulate boarding
+    // Send 12 ASSIGN_ELEVATOR commands to simulate passenger boarding.
     for (int i = 0; i < 12; i++) {
         sendTestCommand("ASSIGN_ELEVATOR 1 5", 9005);
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
     
-    // Wait for processing
+    // Wait for processing and instrumentation output.
     std::this_thread::sleep_for(std::chrono::seconds(10));
     
-    // Send shutdown command
+    // Send shutdown command.
     sendTestCommand("SHUTDOWN", 9005);
     
     elevatorThread.join();

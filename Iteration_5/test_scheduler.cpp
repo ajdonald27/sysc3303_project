@@ -1,3 +1,8 @@
+/**
+ * SYSC3303 - Project Iteration 5
+ * Authors: Sami Kasoua, Adam Sultan
+ * Date: March 23rd, 2025
+ */
 #include "Datagram.h"
 #include <iostream>
 #include <thread>
@@ -5,8 +10,6 @@
 #include <vector>
 #include <arpa/inet.h>
 
-// Include the Scheduler class (from scheduler.cpp)
-// Make sure scheduler.cpp is compiled with -DUNIT_TEST to exclude its main() function.
 #include "scheduler.cpp"
 
 void sendTestCommand(const std::string &command, int port) {
@@ -28,20 +31,29 @@ int main() {
         testScheduler.join();
     });
     
-    // Allow the scheduler to start
+    // Allow the scheduler to start and listen
     std::this_thread::sleep_for(std::chrono::seconds(1));
     
-    // Send a floor request command
-    sendTestCommand("FLOOR_REQUEST 1 UP 5", 8000);
+    // Simulate initial elevator status updates so the scheduler's map is populated.
+    sendTestCommand("ELEVATOR_STATUS 1 0 IDLE 0 10 0", 8000);
+    sendTestCommand("ELEVATOR_STATUS 2 0 IDLE 0 10 0", 8000);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     
-    // Wait for processing and display updates
+    // Send multiple floor requests to test the round-robin load balancing.
+    sendTestCommand("FLOOR_REQUEST 1 UP 5", 8000);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    sendTestCommand("FLOOR_REQUEST 1 UP 6", 8000);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    sendTestCommand("FLOOR_REQUEST 1 UP 7", 8000);
+    
+    // Wait for processing and display updates.
     std::this_thread::sleep_for(std::chrono::seconds(10));
     
-    // Send shutdown command
+    // Send shutdown command to end the test.
     sendTestCommand("SHUTDOWN", 8000);
     
     schedulerThread.join();
-    std::cout << "Scheduler Unit Test for Iteration 5 completed. Check output for floor request processing and display updates." << std::endl;
+    std::cout << "Scheduler Unit Test for Iteration 5 completed. Check output for floor request processing, round-robin load balancing, and display updates." << std::endl;
     
     return 0;
 }
