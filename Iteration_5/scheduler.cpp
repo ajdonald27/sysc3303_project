@@ -1,11 +1,11 @@
 /**
- * SYSC3303 - Project Iteration 4
- * Authors:David Hos, Aj Donald, Jayven Larsen
+ * SYSC3303 - Project Iteration 5
+ * Authors: David Hos, Aj Donald, Jayven Larsen
  * Date: March 23rd, 2025
  */
-
 #include "Datagram.h"
-#include <iostream>
+#include "Logger.h"
+#include <fstream>
 #include <sstream>
 #include <thread>
 #include <queue>
@@ -15,6 +15,7 @@
 #include <unordered_map>
 #include <chrono>
 #include <arpa/inet.h>  // for htons()
+#include <string>
 
 enum class SchedulerState { IDLE, ASSIGNING, WAITING };
 
@@ -53,7 +54,8 @@ public:
                 totalMovements += entry.second.movementCount;
             }
         }
-        std::cout << "[Scheduler] Simulation time: " << elapsed << " seconds. Total movements: " << totalMovements << "\n";
+        Logger::getInstance().log("[Scheduler] Simulation time: " + std::to_string(elapsed) +
+                                  " seconds. Total movements: " + std::to_string(totalMovements));
     }
  
 private:
@@ -74,19 +76,19 @@ private:
  
     std::chrono::steady_clock::time_point startTime;
     
-    // New member variable for round-robin scheduling.
+    // Round-robin scheduling for 4 elevators.
     int nextElevator;  // Starts with elevator 1.
  
     void receiveLoop() {
         try {
             DatagramSocket udpSocket(htons(8000));
-            std::cout << "[Scheduler] Listening on port 8000...\n";
+            Logger::getInstance().log("[Scheduler] Listening on port 8000...");
             while (running) {
                 std::vector<uint8_t> buffer(1024);
                 DatagramPacket packet(buffer, buffer.size());
                 udpSocket.receive(packet);
                 std::string msg(buffer.begin(), buffer.begin() + packet.getLength());
-                std::cout << "[Scheduler] Received: " << msg << "\n";
+                Logger::getInstance().log("[Scheduler] Received: " + msg);
                 {
                     std::lock_guard<std::mutex> lock(queueMutex);
                     messageQueue.push(msg);
@@ -94,7 +96,7 @@ private:
                 queueCV.notify_one();
             }
         } catch (const std::exception &e) {
-            std::cerr << "[Scheduler] Exception in receiver: " << e.what() << "\n";
+            Logger::getInstance().log("[Scheduler] Exception in receiver: " + std::string(e.what()));
         }
     }
  
@@ -119,9 +121,9 @@ private:
             std::string direction;
             int destination;
             iss >> floor >> direction >> destination;
-            std::cout << "[Scheduler] Processing floor request from floor " << floor 
-                      << " going " << direction << " to " << destination << "\n";
-            int numElevators = 2;
+            Logger::getInstance().log("[Scheduler] Processing floor request from floor " + std::to_string(floor) +
+                      " going " + direction + " to " + std::to_string(destination));
+            int numElevators = 4; // Now 4 elevators
             int assignedElevator = -1;
             {
                 // Use the statusMutex to safely access both elevatorStatusMap and nextElevator.
@@ -145,7 +147,7 @@ private:
                 }
             }
             if (assignedElevator == -1) {
-                std::cout << "[Scheduler] All elevators full. Requeuing request.\n";
+                Logger::getInstance().log("[Scheduler] All elevators full. Requeuing request.");
                 {
                     std::lock_guard<std::mutex> lock(queueMutex);
                     messageQueue.push(msg);
@@ -153,12 +155,17 @@ private:
                 std::this_thread::sleep_for(std::chrono::seconds(2));
                 queueCV.notify_one();
             } else {
-                std::cout << "[Scheduler] Round-robin selection: Elevator " << assignedElevator 
-                          << " assigned for floor request from floor " << floor 
-                          << " to " << destination << ". Next elevator pointer set to " << nextElevator << ".\n";
+                Logger::getInstance().log("[Scheduler] Round-robin selection: Elevator " + std::to_string(assignedElevator) +
+                          " assigned for floor request from floor " + std::to_string(floor) +
+                          " to " + std::to_string(destination) + ". Next elevator pointer set to " + std::to_string(nextElevator) + ".");
                 std::string command = "ASSIGN_ELEVATOR " + std::to_string(assignedElevator) 
                                       + " " + std::to_string(destination);
-                int elevatorPort = (assignedElevator == 1) ? 8001 : 8002;
+                int elevatorPort = 0;
+                // Map elevator id to port number.
+                if (assignedElevator == 1) elevatorPort = 8001;
+                else if (assignedElevator == 2) elevatorPort = 8002;
+                else if (assignedElevator == 3) elevatorPort = 8003;
+                else if (assignedElevator == 4) elevatorPort = 8004;
                 sendCommand(command, "127.0.0.1", htons(elevatorPort));
             }
         }
@@ -166,9 +173,9 @@ private:
             std::string faultType;
             int floor;
             iss >> faultType >> floor;
-            std::cout << "[Scheduler] Handling fault: " << faultType << " on floor " << floor << "\n";
+            Logger::getInstance().log("[Scheduler] Handling fault: " + faultType + " on floor " + std::to_string(floor));
             std::string command = "FAULT " + faultType + " " + std::to_string(floor);
-            int elevatorPort = (floor % 2 == 1) ? 8001 : 8002;
+            int elevatorPort = (floor % 2 == 1) ? 8001 : 8002; // This mapping might be adjusted as needed
             sendCommand(command, "127.0.0.1", htons(elevatorPort));
         } 
         else if (type == "ELEVATOR_STATUS") {
@@ -179,12 +186,12 @@ private:
                 std::lock_guard<std::mutex> lock(statusMutex);
                 elevatorStatusMap[elevatorId] = {currentFloor, occupancy, capacity, movementCount, status};
             }
-            std::cout << "[Scheduler] Elevator " << elevatorId << " is at floor " << currentFloor 
-                      << " (" << status << ") Occupancy: " << occupancy << "/" << capacity 
-                      << " Movements: " << movementCount << "\n";
+            Logger::getInstance().log("[Scheduler] Elevator " + std::to_string(elevatorId) + " is at floor " +
+                      std::to_string(currentFloor) + " (" + status + ") Occupancy: " + std::to_string(occupancy) +
+                      "/" + std::to_string(capacity) + " Movements: " + std::to_string(movementCount));
         }
         else if (type == "SHUTDOWN") {
-            std::cout << "[Scheduler] Shutdown command received.\n";
+            Logger::getInstance().log("[Scheduler] Shutdown command received.");
             running = false;
             displayRunning = false;
         }
@@ -196,10 +203,9 @@ private:
             std::vector<uint8_t> data(command.begin(), command.end());
             DatagramPacket packet(data, data.size(), inet_addr(address.c_str()), port);
             udpSocket.send(packet);
-            std::cout << "[Scheduler] Sent command: " << command 
-                      << " to " << address << ":" << ntohs(port) << "\n";
+            Logger::getInstance().log("[Scheduler] Sent command: " + command + " to " + address + ":" + std::to_string(ntohs(port)));
         } catch (const std::exception &e) {
-            std::cerr << "[Scheduler] Send error: " << e.what() << "\n";
+            Logger::getInstance().log("[Scheduler] Send error: " + std::string(e.what()));
         }
     }
  
@@ -207,14 +213,13 @@ private:
         while (displayRunning) {
             {
                 std::lock_guard<std::mutex> lock(statusMutex);
-                std::cout << "----- Elevator Status -----\n";
+                Logger::getInstance().log("----- Elevator Status -----");
                 for (auto &entry : elevatorStatusMap) {
-                    std::cout << "Elevator " << entry.first << " - Floor: " << entry.second.floor 
-                              << ", Occupancy: " << entry.second.occupancy << "/" << entry.second.capacity 
-                              << ", Status: " << entry.second.status 
-                              << ", Movements: " << entry.second.movementCount << "\n";
+                    Logger::getInstance().log("Elevator " + std::to_string(entry.first) + " - Floor: " + std::to_string(entry.second.floor) +
+                              ", Occupancy: " + std::to_string(entry.second.occupancy) + "/" + std::to_string(entry.second.capacity) +
+                              ", Status: " + entry.second.status + ", Movements: " + std::to_string(entry.second.movementCount));
                 }
-                std::cout << "---------------------------\n";
+                Logger::getInstance().log("---------------------------");
             }
             std::this_thread::sleep_for(std::chrono::seconds(1));
         }
@@ -222,11 +227,12 @@ private:
 };
  
 #ifndef UNIT_TEST
-
+ 
 int main() {
     Scheduler scheduler;
     scheduler.start();
     scheduler.join();
     return 0;
 }
+ 
 #endif

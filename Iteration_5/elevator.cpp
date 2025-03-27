@@ -1,9 +1,10 @@
 /**
  * SYSC3303 - Project Iteration 5
- * Authors:David Hos, Aj Donald, Jayven Larsen
+ * Authors: David Hos, Aj Donald, Jayven Larsen
  * Date: March 23rd, 2025
  */
 #include "Datagram.h"
+#include "Logger.h"
 #include <iostream>
 #include <thread>
 #include <mutex>
@@ -13,6 +14,7 @@
 #include <cstdlib>
 #include <arpa/inet.h>  // for htons()
 #include <cmath>
+#include <string>
 
 enum class ElevatorState { IDLE, MOVING, ARRIVED, STUCK, DOOR_FAILURE, FULL };
 
@@ -54,18 +56,18 @@ private:
     void listenerLoop() {
         try {
             DatagramSocket udpSocket(htons(port));
-            std::cout << "[Elevator " << elevatorId << "] Listening on port " << port << "...\n";
+            Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Listening on port " + std::to_string(port) + "...");
             while (running) {
                 std::vector<uint8_t> buffer(1024);
                 DatagramPacket packet(buffer, buffer.size());
                 udpSocket.receive(packet);
                 std::string msg(buffer.begin(), buffer.begin() + packet.getLength());
-                std::cout << "[Elevator " << elevatorId << "] Received: " << msg << "\n";
+                Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Received: " + msg);
                 processCommand(msg);
             }
-            std::cout << "[Elevator " << elevatorId << "] Listener loop terminated.\n";
+            Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Listener loop terminated.");
         } catch (const std::exception &e) {
-            std::cerr << "[Elevator " << elevatorId << "] Listener exception: " << e.what() << "\n";
+            Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Listener exception: " + std::string(e.what()));
         }
     }
  
@@ -76,7 +78,7 @@ private:
         if (type == "SHUTDOWN") {
             {
                 std::lock_guard<std::mutex> lock(stateMutex);
-                std::cout << "[Elevator " << elevatorId << "] Shutdown command received. Terminating listener.\n";
+                Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Shutdown command received. Terminating listener.");
                 running = false;
             }
             return;
@@ -88,17 +90,17 @@ private:
                 std::lock_guard<std::mutex> lock(stateMutex);
                 if (state == ElevatorState::IDLE) {
                     if (currentOccupancy >= capacity) {
-                        std::cout << "[Elevator " << elevatorId << "] Cannot board, capacity full.\n";
+                        Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Cannot board, capacity full.");
                         sendStatus("FULL");
                     } else {
                         currentOccupancy++; // passenger boards
-                        std::cout << "[Elevator " << elevatorId << "] Command received to go to floor " 
-                                  << targetFloor << "\n";
+                        Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Command received to go to floor " 
+                                  + std::to_string(targetFloor));
                         std::thread(&Elevator::moveToFloor, this, targetFloor).detach();
                     }
                 } else {
-                    std::cout << "[Elevator " << elevatorId << "] Busy (current state: " << stateToString(state)
-                              <<"). Ignoring command for floor " << targetFloor << "\n";
+                    Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Busy (current state: " + stateToString(state)
+                              +"). Ignoring command for floor " + std::to_string(targetFloor));
                 }
             }
         }
@@ -108,18 +110,18 @@ private:
             if (id == elevatorId) {
                 std::lock_guard<std::mutex> lock(stateMutex);
                 state = ElevatorState::STUCK;
-                std::cout << "[Elevator " << elevatorId << "] Stuck between floors. Notifying scheduler...\n";
+                Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Stuck between floors. Notifying scheduler...");
                 sendStatus("STUCK");
             }
         } 
         // Handle sensor failure
         if (type == "SENSOR_RESET") {
-            std::cout << "[Elevator " << elevatorId << "] Sensor failure detected. Continuing operation.\n";
+            Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Sensor failure detected. Continuing operation.");
             sendStatus("SENSOR_FAILURE");
         } 
         // Handle door failure
         if (type == "DOOR_RESET") {
-            std::cout << "[Elevator " << elevatorId << "] Door failure detected. Attempting reset...\n";
+            Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Door failure detected. Attempting reset...");
             {
                 std::lock_guard<std::mutex> lock(stateMutex);
                 state = ElevatorState::DOOR_FAILURE;  // Prevents movement during reset
@@ -129,7 +131,7 @@ private:
                 std::lock_guard<std::mutex> lock(stateMutex);
                 state = ElevatorState::IDLE; 
             }
-            std::cout << "[Elevator " << elevatorId << "] Door reset complete.\n";
+            Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Door reset complete.");
             sendStatus("DOOR_FIXED");
         }
     }
@@ -152,7 +154,7 @@ private:
                 // Check for movement timeout (hard fault)
                 if (elapsedTime > (std::abs(floor - currentFloor) * TIME_PER_FLOOR + FAULT_THRESHOLD)) {
                     state = ElevatorState::STUCK;
-                    std::cout << "[Elevator " << elevatorId << "] Stuck at floor " << currentFloor << "!\n";
+                    Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Stuck at floor " + std::to_string(currentFloor) + "!");
                     sendStatus("STUCK");
                     return; // Stop movement
                 }
@@ -164,15 +166,15 @@ private:
                     currentFloor--;
                     movementCount++;
                 }
-                std::cout << "[Elevator " << elevatorId << "] Moving... Current floor: " 
-                          << currentFloor << "\n";
+                Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Moving... Current floor: " 
+                          + std::to_string(currentFloor));
             }
             sendStatus("MOVING");
         }
         {
             std::lock_guard<std::mutex> lock(stateMutex);
             state = ElevatorState::ARRIVED;
-            std::cout << "[Elevator " << elevatorId << "] Arrived at floor " << currentFloor << "\n";
+            Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Arrived at floor " + std::to_string(currentFloor));
         }
         sendStatus("ARRIVED");
     
@@ -199,10 +201,10 @@ private:
         if (elapsedTime > DOOR_OPEN_TIME + FAULT_THRESHOLD) {
             std::lock_guard<std::mutex> lock(stateMutex);
             state = ElevatorState::DOOR_FAILURE;
-            std::cout << "[Elevator " << elevatorId << "] Door stuck open at floor " << currentFloor << "!\n";
+            Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Door stuck open at floor " + std::to_string(currentFloor) + "!");
             sendStatus("DOOR_FAILURE");
         } else {
-            std::cout << "[Elevator " << elevatorId << "] Doors opened.\n";
+            Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Doors opened.");
         }
     }
     
@@ -216,10 +218,10 @@ private:
         if (elapsedTime > DOOR_CLOSE_TIME + FAULT_THRESHOLD) {
             std::lock_guard<std::mutex> lock(stateMutex);
             state = ElevatorState::DOOR_FAILURE;
-            std::cout << "[Elevator " << elevatorId << "] Door stuck closed at floor " << currentFloor << "!\n";
+            Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Door stuck closed at floor " + std::to_string(currentFloor) + "!");
             sendStatus("DOOR_FAILURE");
         } else {
-            std::cout << "[Elevator " << elevatorId << "] Doors closed.\n";
+            Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Doors closed.");
         }
     }
  
@@ -234,9 +236,9 @@ private:
             std::vector<uint8_t> data(update.begin(), update.end());
             DatagramPacket packet(data, data.size(), InetAddress::getLocalHost(), htons(8000));
             udpSocket.send(packet);
-            std::cout << "[Elevator " << elevatorId << "] Sent status: " << update << "\n";
+            Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Sent status: " + update);
         } catch (const std::exception &e) {
-            std::cerr << "[Elevator " << elevatorId << "] Status send error: " << e.what() << "\n";
+            Logger::getInstance().log("[Elevator " + std::to_string(elevatorId) + "] Status send error: " + std::string(e.what()));
         }
     }
  
@@ -260,24 +262,31 @@ constexpr int Elevator::DOOR_CLOSE_TIME;
 constexpr int Elevator::FAULT_THRESHOLD;
  
 #ifndef UNIT_TEST
-
-
+ 
 int main() {
-    // Create two elevators:
+    // Create four elevators:
     // Elevator 1 with id 1, starting at floor 0, listening on port 8001.
     // Elevator 2 with id 2, starting at floor 0, listening on port 8002.
+    // Elevator 3 with id 3, starting at floor 0, listening on port 8003.
+    // Elevator 4 with id 4, starting at floor 0, listening on port 8004.
     Elevator elevator1(1, 0, 8001);
     Elevator elevator2(2, 0, 8002);
+    Elevator elevator3(3, 0, 8003);
+    Elevator elevator4(4, 0, 8004);
  
     elevator1.start();
     elevator2.start();
+    elevator3.start();
+    elevator4.start();
  
     // Wait for the elevators to finish.
     elevator1.join();
     elevator2.join();
+    elevator3.join();
+    elevator4.join();
  
-    std::cout << "All elevators terminated. Exiting.\n";
+    Logger::getInstance().log("All elevators terminated. Exiting.");
     return 0;
 }
-
+ 
 #endif
