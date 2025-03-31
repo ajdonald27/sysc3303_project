@@ -102,7 +102,7 @@
          state = FloorState::IDLE;
      }
  };
-  
+ #ifndef UNIT_TEST
  int main() {
      // For demonstration, simulate floors 1 and 2.
      Floor floor1(1);
@@ -118,4 +118,4 @@
      Logger::getInstance().log("[Floor 1 & 2] Exiting program.");
      return 0;
  }
- 
+ #endif

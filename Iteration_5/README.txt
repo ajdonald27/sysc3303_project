@@ -52,7 +52,8 @@ Change InetAddress::getLocalHost --> the IP Address you wish.
 COMPILE / RUNNING TESTS 
 g++ -std=c++11 -pthread -DUNIT_TEST -o test_elevator test_elevator.cpp
 g++ -std=c++11 -pthread -DUNIT_TEST -o test_scheduler test_scheduler.cpp
-
+g++ -std=c++11 -pthread -DUNIT_TEST -o test_floor test_floor.cpp
 
 ./test_elevator.cpp
+./test_floor
 ./test_scheduler.cpp
