@@ -1,4 +1,4 @@
-SYSC 3303ABC Elevator Control System - Iteration 4
+SYSC 3303ABC Elevator Control System - Iteration 5
 -----------------------------------------------------
 Files:
   1. Datagram.h         - UDP helper header (unchanged)
@@ -7,6 +7,7 @@ Files:
   4. floor.cpp          - Floor subsystem (reads requests from trace.txt and sends them via UDP)
   5. trace.txt          - Input file containing floor requests
   6. README.txt         - This file with setup instructions
+  7. Logger.h           - Additional supporting header to generated a unified log 
 
 build instructions:
   - compile each .cpp file separately using:
@@ -23,12 +24,16 @@ run instructions:
   - In Terminal 3, run the Floor subsystem:
       ./floor
 
+
+To see the unified log of the program run the following:
+  - tail -f unified.log
+
+
 Note:
   - The current configuration uses localhost (127.0.0.1) for UDP communications.
   - To run on different computers, update the IP addresses in the sendCommand functions accordingly.
   - the trace.txt file is read by the floor subsystem to simulate elevator requests. 
   - Refactored the code from iteration 3 to have a floor subsystem aswell. 
-
 
 RUNNING USING MULTIPLE HOST: 
 
