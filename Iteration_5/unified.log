@@ -1,0 +1,339 @@
+[2025-03-31 10:11:56.524] [Scheduler] Listening on port 8000...
+[2025-03-31 10:11:56.525] ----- Elevator Status -----
+[2025-03-31 10:11:56.525] ---------------------------
+[2025-03-31 10:11:59.531] ----- Elevator Status -----
+[2025-03-31 10:11:59.532] ---------------------------
+[2025-03-31 10:11:59.809] [Elevator 2] Listening on port 8002...
+[2025-03-31 10:11:59.809] [Elevator 3] Listening on port 8003...
+[2025-03-31 10:11:59.809] [Elevator 1] Listening on port 8001...
+[2025-03-31 10:11:59.809] [Elevator 4] Listening on port 8004...
+[2025-03-31 10:12:02.532] ----- Elevator Status -----
+[2025-03-31 10:12:02.533] ---------------------------
+[2025-03-31 10:12:03.341] [Scheduler] Received: FLOOR_REQUEST 1 UP 5 1
+[2025-03-31 10:12:03.341] [Scheduler] Processing floor request from floor 1 going UP to 5 with 1 passenger(s).
+[2025-03-31 10:12:03.341] [Scheduler] Round-robin selection: Elevator 1 assigned for floor request from floor 1 to 5 with 1 passenger(s). Next elevator pointer set to 2.
+[2025-03-31 10:12:03.341] [Scheduler] Sent command: ASSIGN_ELEVATOR 1 5 1 to 127.0.0.1:8001
+[2025-03-31 10:12:03.341] [Elevator 1] Received: ASSIGN_ELEVATOR 1 5 1
+[2025-03-31 10:12:03.341] [Elevator 1] Command received to go to floor 5 with 1 passenger(s) boarding.
+[2025-03-31 10:12:03.341] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 5 1
+[2025-03-31 10:12:04.346] [Elevator 1] Moving... Current floor: 1
+[2025-03-31 10:12:04.346] [Elevator 1] Sent status: ELEVATOR_STATUS 1 1 MOVING 1 10 1
+[2025-03-31 10:12:04.346] [Scheduler] Received: ELEVATOR_STATUS 1 1 MOVING 1 10 1
+[2025-03-31 10:12:04.346] [Scheduler] Elevator 1 is at floor 1 (MOVING) Occupancy: 1/10 Movements: 1
+[2025-03-31 10:12:05.351] [Elevator 1] Moving... Current floor: 2
+[2025-03-31 10:12:05.351] [Elevator 1] Sent status: ELEVATOR_STATUS 1 2 MOVING 1 10 2
+[2025-03-31 10:12:05.351] [Scheduler] Received: ELEVATOR_STATUS 1 2 MOVING 1 10 2
+[2025-03-31 10:12:05.352] [Scheduler] Elevator 1 is at floor 2 (MOVING) Occupancy: 1/10 Movements: 2
+[2025-03-31 10:12:05.533] ----- Elevator Status -----
+[2025-03-31 10:12:05.533] Elevator 1 - Floor: 2, Occupancy: 1/10, Status: MOVING, Movements: 2
+[2025-03-31 10:12:05.533] ---------------------------
+[2025-03-31 10:12:06.355] [Elevator 1] Moving... Current floor: 3
+[2025-03-31 10:12:06.355] [Elevator 1] Sent status: ELEVATOR_STATUS 1 3 MOVING 1 10 3
+[2025-03-31 10:12:06.355] [Scheduler] Received: ELEVATOR_STATUS 1 3 MOVING 1 10 3
+[2025-03-31 10:12:06.355] [Scheduler] Elevator 1 is at floor 3 (MOVING) Occupancy: 1/10 Movements: 3
+[2025-03-31 10:12:07.360] [Elevator 1] Moving... Current floor: 4
+[2025-03-31 10:12:07.360] [Elevator 1] Sent status: ELEVATOR_STATUS 1 4 MOVING 1 10 4
+[2025-03-31 10:12:07.360] [Scheduler] Received: ELEVATOR_STATUS 1 4 MOVING 1 10 4
+[2025-03-31 10:12:07.361] [Scheduler] Elevator 1 is at floor 4 (MOVING) Occupancy: 1/10 Movements: 4
+[2025-03-31 10:12:08.348] [Floor 1] Sent request: FLOOR_REQUEST 1 DOWN 1 1
+[2025-03-31 10:12:08.349] [Scheduler] Received: FLOOR_REQUEST 1 DOWN 1 1
+[2025-03-31 10:12:08.350] [Scheduler] Processing floor request from floor 1 going DOWN to 1 with 1 passenger(s).
+[2025-03-31 10:12:08.351] [Scheduler] Round-robin selection: Elevator 2 assigned for floor request from floor 1 to 1 with 1 passenger(s). Next elevator pointer set to 3.
+[2025-03-31 10:12:08.352] [Scheduler] Sent command: ASSIGN_ELEVATOR 2 1 1 to 127.0.0.1:8002
+[2025-03-31 10:12:08.352] [Elevator 2] Received: ASSIGN_ELEVATOR 2 1 1
+[2025-03-31 10:12:08.352] [Elevator 2] Command received to go to floor 1 with 1 passenger(s) boarding.
+[2025-03-31 10:12:08.363] [Elevator 1] Moving... Current floor: 5
+[2025-03-31 10:12:08.364] [Elevator 1] Sent status: ELEVATOR_STATUS 1 5 MOVING 1 10 5
+[2025-03-31 10:12:08.364] [Elevator 1] Arrived at floor 5
+[2025-03-31 10:12:08.364] [Scheduler] Received: ELEVATOR_STATUS 1 5 MOVING 1 10 5
+[2025-03-31 10:12:08.364] [Elevator 1] Sent status: ELEVATOR_STATUS 1 5 ARRIVED 1 10 5
+[2025-03-31 10:12:08.364] [Scheduler] Elevator 1 is at floor 5 (MOVING) Occupancy: 1/10 Movements: 5
+[2025-03-31 10:12:08.364] [Scheduler] Received: ELEVATOR_STATUS 1 5 ARRIVED 1 10 5
+[2025-03-31 10:12:08.364] [Scheduler] Elevator 1 is at floor 5 (ARRIVED) Occupancy: 1/10 Movements: 5
+[2025-03-31 10:12:08.535] ----- Elevator Status -----
+[2025-03-31 10:12:08.535] Elevator 1 - Floor: 5, Occupancy: 1/10, Status: ARRIVED, Movements: 5
+[2025-03-31 10:12:08.535] ---------------------------
+[2025-03-31 10:12:09.359] [Elevator 2] Moving... Current floor: 1
+[2025-03-31 10:12:09.361] [Elevator 2] Sent status: ELEVATOR_STATUS 2 1 MOVING 1 10 1
+[2025-03-31 10:12:09.361] [Scheduler] Received: ELEVATOR_STATUS 2 1 MOVING 1 10 1
+[2025-03-31 10:12:09.361] [Elevator 2] Arrived at floor 1
+[2025-03-31 10:12:09.361] [Elevator 2] Sent status: ELEVATOR_STATUS 2 1 ARRIVED 1 10 1
+[2025-03-31 10:12:09.361] [Scheduler] Elevator 2 is at floor 1 (MOVING) Occupancy: 1/10 Movements: 1
+[2025-03-31 10:12:09.361] [Scheduler] Received: ELEVATOR_STATUS 2 1 ARRIVED 1 10 1
+[2025-03-31 10:12:09.361] [Scheduler] Elevator 2 is at floor 1 (ARRIVED) Occupancy: 1/10 Movements: 1
+[2025-03-31 10:12:10.367] [Elevator 1] Doors opened.
+[2025-03-31 10:12:11.365] [Elevator 2] Doors opened.
+[2025-03-31 10:12:11.539] ----- Elevator Status -----
+[2025-03-31 10:12:11.539] Elevator 2 - Floor: 1, Occupancy: 1/10, Status: ARRIVED, Movements: 1
+[2025-03-31 10:12:11.539] Elevator 1 - Floor: 5, Occupancy: 1/10, Status: ARRIVED, Movements: 5
+[2025-03-31 10:12:11.539] ---------------------------
+[2025-03-31 10:12:12.371] [Elevator 1] Doors closed.
+[2025-03-31 10:12:12.371] [Elevator 1] Sent status: ELEVATOR_STATUS 1 5 IDLE 0 10 5
+[2025-03-31 10:12:12.372] [Scheduler] Received: ELEVATOR_STATUS 1 5 IDLE 0 10 5
+[2025-03-31 10:12:12.373] [Scheduler] Elevator 1 is at floor 5 (IDLE) Occupancy: 0/10 Movements: 5
+[2025-03-31 10:12:13.355] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 4 1
+[2025-03-31 10:12:13.355] [Scheduler] Received: FLOOR_REQUEST 1 UP 4 1
+[2025-03-31 10:12:13.355] [Scheduler] Processing floor request from floor 1 going UP to 4 with 1 passenger(s).
+[2025-03-31 10:12:13.355] [Scheduler] Round-robin selection: Elevator 3 assigned for floor request from floor 1 to 4 with 1 passenger(s). Next elevator pointer set to 4.
+[2025-03-31 10:12:13.355] [Scheduler] Sent command: ASSIGN_ELEVATOR 3 4 1 to 127.0.0.1:8003
+[2025-03-31 10:12:13.355] [Elevator 3] Received: ASSIGN_ELEVATOR 3 4 1
+[2025-03-31 10:12:13.355] [Elevator 3] Command received to go to floor 4 with 1 passenger(s) boarding.
+[2025-03-31 10:12:13.370] [Elevator 2] Doors closed.
+[2025-03-31 10:12:13.370] [Elevator 2] Sent status: ELEVATOR_STATUS 2 1 IDLE 0 10 1
+[2025-03-31 10:12:13.370] [Scheduler] Received: ELEVATOR_STATUS 2 1 IDLE 0 10 1
+[2025-03-31 10:12:13.371] [Scheduler] Elevator 2 is at floor 1 (IDLE) Occupancy: 0/10 Movements: 1
+[2025-03-31 10:12:14.359] [Elevator 3] Moving... Current floor: 1
+[2025-03-31 10:12:14.360] [Elevator 3] Sent status: ELEVATOR_STATUS 3 1 MOVING 1 10 1
+[2025-03-31 10:12:14.360] [Scheduler] Received: ELEVATOR_STATUS 3 1 MOVING 1 10 1
+[2025-03-31 10:12:14.360] [Scheduler] Elevator 3 is at floor 1 (MOVING) Occupancy: 1/10 Movements: 1
+[2025-03-31 10:12:14.545] ----- Elevator Status -----
+[2025-03-31 10:12:14.545] Elevator 3 - Floor: 1, Occupancy: 1/10, Status: MOVING, Movements: 1
+[2025-03-31 10:12:14.545] Elevator 2 - Floor: 1, Occupancy: 0/10, Status: IDLE, Movements: 1
+[2025-03-31 10:12:14.545] Elevator 1 - Floor: 5, Occupancy: 0/10, Status: IDLE, Movements: 5
+[2025-03-31 10:12:14.545] ---------------------------
+[2025-03-31 10:12:15.364] [Elevator 3] Moving... Current floor: 2
+[2025-03-31 10:12:15.365] [Elevator 3] Sent status: ELEVATOR_STATUS 3 2 MOVING 1 10 2
+[2025-03-31 10:12:15.365] [Scheduler] Received: ELEVATOR_STATUS 3 2 MOVING 1 10 2
+[2025-03-31 10:12:15.365] [Scheduler] Elevator 3 is at floor 2 (MOVING) Occupancy: 1/10 Movements: 2
+[2025-03-31 10:12:16.365] [Elevator 3] Moving... Current floor: 3
+[2025-03-31 10:12:16.366] [Elevator 3] Sent status: ELEVATOR_STATUS 3 3 MOVING 1 10 3
+[2025-03-31 10:12:16.366] [Scheduler] Received: ELEVATOR_STATUS 3 3 MOVING 1 10 3
+[2025-03-31 10:12:16.366] [Scheduler] Elevator 3 is at floor 3 (MOVING) Occupancy: 1/10 Movements: 3
+[2025-03-31 10:12:17.371] [Elevator 3] Moving... Current floor: 4
+[2025-03-31 10:12:17.375] [Elevator 3] Sent status: ELEVATOR_STATUS 3 4 MOVING 1 10 4
+[2025-03-31 10:12:17.375] [Scheduler] Received: ELEVATOR_STATUS 3 4 MOVING 1 10 4
+[2025-03-31 10:12:17.375] [Elevator 3] Arrived at floor 4
+[2025-03-31 10:12:17.375] [Elevator 3] Sent status: ELEVATOR_STATUS 3 4 ARRIVED 1 10 4
+[2025-03-31 10:12:17.375] [Scheduler] Received: ELEVATOR_STATUS 3 4 ARRIVED 1 10 4
+[2025-03-31 10:12:17.375] [Scheduler] Elevator 3 is at floor 4 (MOVING) Occupancy: 1/10 Movements: 4
+[2025-03-31 10:12:17.375] [Scheduler] Elevator 3 is at floor 4 (ARRIVED) Occupancy: 1/10 Movements: 4
+[2025-03-31 10:12:17.550] ----- Elevator Status -----
+[2025-03-31 10:12:17.550] Elevator 3 - Floor: 4, Occupancy: 1/10, Status: ARRIVED, Movements: 4
+[2025-03-31 10:12:17.550] Elevator 2 - Floor: 1, Occupancy: 0/10, Status: IDLE, Movements: 1
+[2025-03-31 10:12:17.550] Elevator 1 - Floor: 5, Occupancy: 0/10, Status: IDLE, Movements: 5
+[2025-03-31 10:12:17.550] ---------------------------
+[2025-03-31 10:12:18.360] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 6 1
+[2025-03-31 10:12:18.360] [Scheduler] Received: FLOOR_REQUEST 1 UP 6 1
+[2025-03-31 10:12:18.361] [Scheduler] Processing floor request from floor 1 going UP to 6 with 1 passenger(s).
+[2025-03-31 10:12:18.361] [Scheduler] Round-robin selection: Elevator 4 assigned for floor request from floor 1 to 6 with 1 passenger(s). Next elevator pointer set to 1.
+[2025-03-31 10:12:18.361] [Scheduler] Sent command: ASSIGN_ELEVATOR 4 6 1 to 127.0.0.1:8004
+[2025-03-31 10:12:18.362] [Elevator 4] Received: ASSIGN_ELEVATOR 4 6 1
+[2025-03-31 10:12:18.362] [Elevator 4] Command received to go to floor 6 with 1 passenger(s) boarding.
+[2025-03-31 10:12:19.367] [Elevator 4] Moving... Current floor: 1
+[2025-03-31 10:12:19.367] [Elevator 4] Sent status: ELEVATOR_STATUS 4 1 MOVING 1 10 1
+[2025-03-31 10:12:19.368] [Scheduler] Received: ELEVATOR_STATUS 4 1 MOVING 1 10 1
+[2025-03-31 10:12:19.368] [Scheduler] Elevator 4 is at floor 1 (MOVING) Occupancy: 1/10 Movements: 1
+[2025-03-31 10:12:19.380] [Elevator 3] Doors opened.
+[2025-03-31 10:12:20.372] [Elevator 4] Moving... Current floor: 2
+[2025-03-31 10:12:20.375] [Elevator 4] Sent status: ELEVATOR_STATUS 4 2 MOVING 1 10 2
+[2025-03-31 10:12:20.375] [Scheduler] Received: ELEVATOR_STATUS 4 2 MOVING 1 10 2
+[2025-03-31 10:12:20.375] [Scheduler] Elevator 4 is at floor 2 (MOVING) Occupancy: 1/10 Movements: 2
+[2025-03-31 10:12:20.555] ----- Elevator Status -----
+[2025-03-31 10:12:20.556] Elevator 4 - Floor: 2, Occupancy: 1/10, Status: MOVING, Movements: 2
+[2025-03-31 10:12:20.556] Elevator 3 - Floor: 4, Occupancy: 1/10, Status: ARRIVED, Movements: 4
+[2025-03-31 10:12:20.556] Elevator 2 - Floor: 1, Occupancy: 0/10, Status: IDLE, Movements: 1
+[2025-03-31 10:12:20.556] Elevator 1 - Floor: 5, Occupancy: 0/10, Status: IDLE, Movements: 5
+[2025-03-31 10:12:20.556] ---------------------------
+[2025-03-31 10:12:21.379] [Elevator 4] Moving... Current floor: 3
+[2025-03-31 10:12:21.381] [Elevator 3] Doors closed.
+[2025-03-31 10:12:21.381] [Elevator 3] Sent status: ELEVATOR_STATUS 3 4 IDLE 0 10 4
+[2025-03-31 10:12:21.382] [Elevator 4] Sent status: ELEVATOR_STATUS 4 3 MOVING 1 10 3
+[2025-03-31 10:12:21.382] [Scheduler] Received: ELEVATOR_STATUS 3 4 IDLE 0 10 4
+[2025-03-31 10:12:21.383] [Scheduler] Received: ELEVATOR_STATUS 4 3 MOVING 1 10 3
+[2025-03-31 10:12:21.383] [Scheduler] Elevator 3 is at floor 4 (IDLE) Occupancy: 0/10 Movements: 4
+[2025-03-31 10:12:21.383] [Scheduler] Elevator 4 is at floor 3 (MOVING) Occupancy: 1/10 Movements: 3
+[2025-03-31 10:12:22.387] [Elevator 4] Moving... Current floor: 4
+[2025-03-31 10:12:22.389] [Elevator 4] Sent status: ELEVATOR_STATUS 4 4 MOVING 1 10 4
+[2025-03-31 10:12:22.390] [Scheduler] Received: ELEVATOR_STATUS 4 4 MOVING 1 10 4
+[2025-03-31 10:12:22.390] [Scheduler] Elevator 4 is at floor 4 (MOVING) Occupancy: 1/10 Movements: 4
+[2025-03-31 10:12:23.364] [Floor 1] Injecting fault: FAULT SENSOR_FAILURE 1
+[2025-03-31 10:12:23.365] [Floor 1] Sent fault: FAULT SENSOR_FAILURE 1
+[2025-03-31 10:12:23.365] [Scheduler] Received: FAULT SENSOR_FAILURE 1
+[2025-03-31 10:12:23.366] [Scheduler] Handling fault: SENSOR_FAILURE on floor 1
+[2025-03-31 10:12:23.366] [Scheduler] Sent command: FAULT SENSOR_FAILURE 1 to 127.0.0.1:8001
+[2025-03-31 10:12:23.367] [Elevator 1] Received: FAULT SENSOR_FAILURE 1
+[2025-03-31 10:12:23.394] [Elevator 4] Moving... Current floor: 5
+[2025-03-31 10:12:23.394] [Elevator 4] Sent status: ELEVATOR_STATUS 4 5 MOVING 1 10 5
+[2025-03-31 10:12:23.394] [Scheduler] Received: ELEVATOR_STATUS 4 5 MOVING 1 10 5
+[2025-03-31 10:12:23.395] [Scheduler] Elevator 4 is at floor 5 (MOVING) Occupancy: 1/10 Movements: 5
+[2025-03-31 10:12:23.561] ----- Elevator Status -----
+[2025-03-31 10:12:23.561] Elevator 4 - Floor: 5, Occupancy: 1/10, Status: MOVING, Movements: 5
+[2025-03-31 10:12:23.561] Elevator 3 - Floor: 4, Occupancy: 0/10, Status: IDLE, Movements: 4
+[2025-03-31 10:12:23.561] Elevator 2 - Floor: 1, Occupancy: 0/10, Status: IDLE, Movements: 1
+[2025-03-31 10:12:23.561] Elevator 1 - Floor: 5, Occupancy: 0/10, Status: IDLE, Movements: 5
+[2025-03-31 10:12:23.561] ---------------------------
+[2025-03-31 10:12:24.395] [Elevator 4] Moving... Current floor: 6
+[2025-03-31 10:12:24.396] [Elevator 4] Sent status: ELEVATOR_STATUS 4 6 MOVING 1 10 6
+[2025-03-31 10:12:24.396] [Elevator 4] Arrived at floor 6
+[2025-03-31 10:12:24.396] [Elevator 4] Sent status: ELEVATOR_STATUS 4 6 ARRIVED 1 10 6
+[2025-03-31 10:12:24.396] [Scheduler] Received: ELEVATOR_STATUS 4 6 MOVING 1 10 6
+[2025-03-31 10:12:24.396] [Scheduler] Received: ELEVATOR_STATUS 4 6 ARRIVED 1 10 6
+[2025-03-31 10:12:24.396] [Scheduler] Elevator 4 is at floor 6 (MOVING) Occupancy: 1/10 Movements: 6
+[2025-03-31 10:12:24.396] [Scheduler] Elevator 4 is at floor 6 (ARRIVED) Occupancy: 1/10 Movements: 6
+[2025-03-31 10:12:26.397] [Elevator 4] Doors opened.
+[2025-03-31 10:12:26.569] ----- Elevator Status -----
+[2025-03-31 10:12:26.569] Elevator 4 - Floor: 6, Occupancy: 1/10, Status: ARRIVED, Movements: 6
+[2025-03-31 10:12:26.569] Elevator 3 - Floor: 4, Occupancy: 0/10, Status: IDLE, Movements: 4
+[2025-03-31 10:12:26.569] Elevator 2 - Floor: 1, Occupancy: 0/10, Status: IDLE, Movements: 1
+[2025-03-31 10:12:26.569] Elevator 1 - Floor: 5, Occupancy: 0/10, Status: IDLE, Movements: 5
+[2025-03-31 10:12:26.569] ---------------------------
+[2025-03-31 10:12:28.368] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 7 1
+[2025-03-31 10:12:28.368] [Scheduler] Received: FLOOR_REQUEST 1 UP 7 1
+[2025-03-31 10:12:28.368] [Scheduler] Processing floor request from floor 1 going UP to 7 with 1 passenger(s).
+[2025-03-31 10:12:28.368] [Scheduler] Round-robin selection: Elevator 1 assigned for floor request from floor 1 to 7 with 1 passenger(s). Next elevator pointer set to 2.
+[2025-03-31 10:12:28.368] [Scheduler] Sent command: ASSIGN_ELEVATOR 1 7 1 to 127.0.0.1:8001
+[2025-03-31 10:12:28.368] [Elevator 1] Received: ASSIGN_ELEVATOR 1 7 1
+[2025-03-31 10:12:28.368] [Elevator 1] Command received to go to floor 7 with 1 passenger(s) boarding.
+[2025-03-31 10:12:28.397] [Elevator 4] Doors closed.
+[2025-03-31 10:12:28.398] [Elevator 4] Sent status: ELEVATOR_STATUS 4 6 IDLE 0 10 6
+[2025-03-31 10:12:28.398] [Scheduler] Received: ELEVATOR_STATUS 4 6 IDLE 0 10 6
+[2025-03-31 10:12:28.398] [Scheduler] Elevator 4 is at floor 6 (IDLE) Occupancy: 0/10 Movements: 6
+[2025-03-31 10:12:29.371] [Elevator 1] Moving... Current floor: 6
+[2025-03-31 10:12:29.371] [Elevator 1] Sent status: ELEVATOR_STATUS 1 6 MOVING 1 10 6
+[2025-03-31 10:12:29.372] [Scheduler] Received: ELEVATOR_STATUS 1 6 MOVING 1 10 6
+[2025-03-31 10:12:29.372] [Scheduler] Elevator 1 is at floor 6 (MOVING) Occupancy: 1/10 Movements: 6
+[2025-03-31 10:12:29.572] ----- Elevator Status -----
+[2025-03-31 10:12:29.573] Elevator 4 - Floor: 6, Occupancy: 0/10, Status: IDLE, Movements: 6
+[2025-03-31 10:12:29.573] Elevator 3 - Floor: 4, Occupancy: 0/10, Status: IDLE, Movements: 4
+[2025-03-31 10:12:29.573] Elevator 2 - Floor: 1, Occupancy: 0/10, Status: IDLE, Movements: 1
+[2025-03-31 10:12:29.573] Elevator 1 - Floor: 6, Occupancy: 1/10, Status: MOVING, Movements: 6
+[2025-03-31 10:12:29.573] ---------------------------
+[2025-03-31 10:12:30.377] [Elevator 1] Moving... Current floor: 7
+[2025-03-31 10:12:30.377] [Elevator 1] Sent status: ELEVATOR_STATUS 1 7 MOVING 1 10 7
+[2025-03-31 10:12:30.377] [Elevator 1] Arrived at floor 7
+[2025-03-31 10:12:30.377] [Elevator 1] Sent status: ELEVATOR_STATUS 1 7 ARRIVED 1 10 7
+[2025-03-31 10:12:30.378] [Scheduler] Received: ELEVATOR_STATUS 1 7 MOVING 1 10 7
+[2025-03-31 10:12:30.378] [Scheduler] Received: ELEVATOR_STATUS 1 7 ARRIVED 1 10 7
+[2025-03-31 10:12:30.378] [Scheduler] Elevator 1 is at floor 7 (MOVING) Occupancy: 1/10 Movements: 7
+[2025-03-31 10:12:30.378] [Scheduler] Elevator 1 is at floor 7 (ARRIVED) Occupancy: 1/10 Movements: 7
+[2025-03-31 10:12:32.380] [Elevator 1] Doors opened.
+[2025-03-31 10:12:32.578] ----- Elevator Status -----
+[2025-03-31 10:12:32.578] Elevator 4 - Floor: 6, Occupancy: 0/10, Status: IDLE, Movements: 6
+[2025-03-31 10:12:32.578] Elevator 3 - Floor: 4, Occupancy: 0/10, Status: IDLE, Movements: 4
+[2025-03-31 10:12:32.578] Elevator 2 - Floor: 1, Occupancy: 0/10, Status: IDLE, Movements: 1
+[2025-03-31 10:12:32.578] Elevator 1 - Floor: 7, Occupancy: 1/10, Status: ARRIVED, Movements: 7
+[2025-03-31 10:12:32.578] ---------------------------
+[2025-03-31 10:12:33.371] [Floor 1] Injecting fault: FAULT STUCK_ELEVATOR 1
+[2025-03-31 10:12:33.371] [Floor 1] Sent fault: FAULT STUCK_ELEVATOR 1
+[2025-03-31 10:12:33.371] [Scheduler] Received: FAULT STUCK_ELEVATOR 1
+[2025-03-31 10:12:33.372] [Scheduler] Handling fault: STUCK_ELEVATOR on floor 1
+[2025-03-31 10:12:33.372] [Scheduler] Sent command: FAULT STUCK_ELEVATOR 1 to 127.0.0.1:8001
+[2025-03-31 10:12:33.372] [Elevator 1] Received: FAULT STUCK_ELEVATOR 1
+[2025-03-31 10:12:34.382] [Elevator 1] Doors closed.
+[2025-03-31 10:12:34.382] [Elevator 1] Sent status: ELEVATOR_STATUS 1 7 IDLE 0 10 7
+[2025-03-31 10:12:34.383] [Scheduler] Received: ELEVATOR_STATUS 1 7 IDLE 0 10 7
+[2025-03-31 10:12:34.383] [Scheduler] Elevator 1 is at floor 7 (IDLE) Occupancy: 0/10 Movements: 7
+[2025-03-31 10:12:35.584] ----- Elevator Status -----
+[2025-03-31 10:12:35.584] Elevator 4 - Floor: 6, Occupancy: 0/10, Status: IDLE, Movements: 6
+[2025-03-31 10:12:35.584] Elevator 3 - Floor: 4, Occupancy: 0/10, Status: IDLE, Movements: 4
+[2025-03-31 10:12:35.584] Elevator 2 - Floor: 1, Occupancy: 0/10, Status: IDLE, Movements: 1
+[2025-03-31 10:12:35.584] Elevator 1 - Floor: 7, Occupancy: 0/10, Status: IDLE, Movements: 7
+[2025-03-31 10:12:35.584] ---------------------------
+[2025-03-31 10:12:38.372] [Floor 1] Sent request: FLOOR_REQUEST 1 DOWN 2 1
+[2025-03-31 10:12:38.372] [Scheduler] Received: FLOOR_REQUEST 1 DOWN 2 1
+[2025-03-31 10:12:38.372] [Scheduler] Processing floor request from floor 1 going DOWN to 2 with 1 passenger(s).
+[2025-03-31 10:12:38.372] [Scheduler] Round-robin selection: Elevator 2 assigned for floor request from floor 1 to 2 with 1 passenger(s). Next elevator pointer set to 3.
+[2025-03-31 10:12:38.372] [Scheduler] Sent command: ASSIGN_ELEVATOR 2 2 1 to 127.0.0.1:8002
+[2025-03-31 10:12:38.373] [Elevator 2] Received: ASSIGN_ELEVATOR 2 2 1
+[2025-03-31 10:12:38.373] [Elevator 2] Command received to go to floor 2 with 1 passenger(s) boarding.
+[2025-03-31 10:12:38.589] ----- Elevator Status -----
+[2025-03-31 10:12:38.589] Elevator 4 - Floor: 6, Occupancy: 0/10, Status: IDLE, Movements: 6
+[2025-03-31 10:12:38.589] Elevator 3 - Floor: 4, Occupancy: 0/10, Status: IDLE, Movements: 4
+[2025-03-31 10:12:38.589] Elevator 2 - Floor: 1, Occupancy: 0/10, Status: IDLE, Movements: 1
+[2025-03-31 10:12:38.589] Elevator 1 - Floor: 7, Occupancy: 0/10, Status: IDLE, Movements: 7
+[2025-03-31 10:12:38.589] ---------------------------
+[2025-03-31 10:12:39.378] [Elevator 2] Moving... Current floor: 2
+[2025-03-31 10:12:39.378] [Elevator 2] Sent status: ELEVATOR_STATUS 2 2 MOVING 1 10 2
+[2025-03-31 10:12:39.378] [Elevator 2] Arrived at floor 2
+[2025-03-31 10:12:39.378] [Elevator 2] Sent status: ELEVATOR_STATUS 2 2 ARRIVED 1 10 2
+[2025-03-31 10:30:51.947] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 5 1
+[2025-03-31 10:30:56.950] [Floor 1] Sent request: FLOOR_REQUEST 1 DOWN 1 1
+[2025-03-31 10:31:01.955] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 4 1
+[2025-03-31 10:31:06.960] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 6 1
+[2025-03-31 10:31:11.969] [Floor 1] Injecting fault: FAULT SENSOR_FAILURE 1
+[2025-03-31 10:31:11.970] [Floor 1] Sent fault: FAULT SENSOR_FAILURE 1
+[2025-03-31 10:31:16.974] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 7 1
+[2025-03-31 10:31:21.980] [Floor 1] Injecting fault: FAULT STUCK_ELEVATOR 1
+[2025-03-31 10:31:21.982] [Floor 1] Sent fault: FAULT STUCK_ELEVATOR 1
+[2025-03-31 10:31:26.984] [Floor 1] Sent request: FLOOR_REQUEST 1 DOWN 2 1
+[2025-03-31 10:31:31.985] [Floor 1] Injecting fault: FAULT DOOR_FAILURE 1
+[2025-03-31 10:31:31.988] [Floor 1] Sent fault: FAULT DOOR_FAILURE 1
+[2025-03-31 10:32:12.023] [Floor 1] Finished processing trace file.
+[2025-03-31 10:32:52.324] ----- Elevator Status -----
+[2025-03-31 10:32:52.325] ---------------------------
+[2025-03-31 10:32:52.325] [Scheduler] Listening on port 8000...
+[2025-03-31 10:32:53.328] [Scheduler] Received: ELEVATOR_STATUS 1 0 IDLE 0 10 0
+[2025-03-31 10:32:53.328] [Scheduler] Received: ELEVATOR_STATUS 2 0 IDLE 0 10 0
+[2025-03-31 10:32:53.328] [Scheduler] Elevator 1 is at floor 0 (IDLE) Occupancy: 0/10 Movements: 0
+[2025-03-31 10:32:53.328] [Scheduler] Elevator 2 is at floor 0 (IDLE) Occupancy: 0/10 Movements: 0
+[2025-03-31 10:32:54.339] [Scheduler] Received: FLOOR_REQUEST 1 UP 5 1
+[2025-03-31 10:32:54.340] [Scheduler] Processing floor request from floor 1 going UP to 5 with 1 passenger(s).
+[2025-03-31 10:32:54.340] [Scheduler] Round-robin selection: Elevator 1 assigned for floor request from floor 1 to 5 with 1 passenger(s). Next elevator pointer set to 2.
+[2025-03-31 10:32:54.340] [Scheduler] Sent command: ASSIGN_ELEVATOR 1 5 1 to 127.0.0.1:8001
+[2025-03-31 10:32:55.330] ----- Elevator Status -----
+[2025-03-31 10:32:55.330] Elevator 2 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-03-31 10:32:55.330] Elevator 1 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-03-31 10:32:55.330] ---------------------------
+[2025-03-31 10:32:55.343] [Scheduler] Received: FLOOR_REQUEST 1 UP 6 1
+[2025-03-31 10:32:55.343] [Scheduler] Processing floor request from floor 1 going UP to 6 with 1 passenger(s).
+[2025-03-31 10:32:55.343] [Scheduler] Round-robin selection: Elevator 2 assigned for floor request from floor 1 to 6 with 1 passenger(s). Next elevator pointer set to 3.
+[2025-03-31 10:32:55.343] [Scheduler] Sent command: ASSIGN_ELEVATOR 2 6 1 to 127.0.0.1:8002
+[2025-03-31 10:32:56.344] [Scheduler] Received: FLOOR_REQUEST 1 UP 7 1
+[2025-03-31 10:32:56.344] [Scheduler] Processing floor request from floor 1 going UP to 7 with 1 passenger(s).
+[2025-03-31 10:32:56.345] [Scheduler] Round-robin selection: Elevator 3 assigned for floor request from floor 1 to 7 with 1 passenger(s). Next elevator pointer set to 4.
+[2025-03-31 10:32:56.345] [Scheduler] Sent command: ASSIGN_ELEVATOR 3 7 1 to 127.0.0.1:8003
+[2025-03-31 10:32:58.339] ----- Elevator Status -----
+[2025-03-31 10:32:58.339] Elevator 2 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-03-31 10:32:58.339] Elevator 1 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-03-31 10:32:58.339] ---------------------------
+[2025-03-31 10:33:01.342] ----- Elevator Status -----
+[2025-03-31 10:33:01.343] Elevator 2 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-03-31 10:33:01.343] Elevator 1 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-03-31 10:33:01.343] ---------------------------
+[2025-03-31 10:33:04.345] ----- Elevator Status -----
+[2025-03-31 10:33:04.345] Elevator 2 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-03-31 10:33:04.346] Elevator 1 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-03-31 10:33:04.346] ---------------------------
+[2025-03-31 10:33:06.347] [Scheduler] Received: SHUTDOWN
+[2025-03-31 10:33:06.348] [Scheduler] Shutdown command received.
+[2025-03-31 10:33:15.225] [Scheduler] Received: FLOOR_REQUEST 1 UP 5 1
+[2025-03-31 10:33:15.225] [Scheduler] Simulation time: 22 seconds. Total movements: 0
+[2025-03-31 10:33:15.225] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 5 1
+[2025-03-31 10:33:20.228] [Floor 1] Sent request: FLOOR_REQUEST 1 DOWN 1 1
+[2025-03-31 10:33:27.215] [Scheduler] Listening on port 8000...
+[2025-03-31 10:33:27.215] ----- Elevator Status -----
+[2025-03-31 10:33:27.215] ---------------------------
+[2025-03-31 10:33:28.220] [Scheduler] Received: ELEVATOR_STATUS 1 0 IDLE 0 10 0
+[2025-03-31 10:33:28.220] [Scheduler] Received: ELEVATOR_STATUS 2 0 IDLE 0 10 0
+[2025-03-31 10:33:28.220] [Scheduler] Elevator 1 is at floor 0 (IDLE) Occupancy: 0/10 Movements: 0
+[2025-03-31 10:33:28.220] [Scheduler] Elevator 2 is at floor 0 (IDLE) Occupancy: 0/10 Movements: 0
+[2025-03-31 10:33:29.220] [Scheduler] Received: FLOOR_REQUEST 1 UP 5 1
+[2025-03-31 10:33:29.221] [Scheduler] Processing floor request from floor 1 going UP to 5 with 1 passenger(s).
+[2025-03-31 10:33:29.221] [Scheduler] Round-robin selection: Elevator 1 assigned for floor request from floor 1 to 5 with 1 passenger(s). Next elevator pointer set to 2.
+[2025-03-31 10:33:29.221] [Scheduler] Sent command: ASSIGN_ELEVATOR 1 5 1 to 127.0.0.1:8001
+[2025-03-31 10:33:30.221] ----- Elevator Status -----
+[2025-03-31 10:33:30.221] Elevator 2 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-03-31 10:33:30.221] Elevator 1 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-03-31 10:33:30.221] ---------------------------
+[2025-03-31 10:33:30.222] [Scheduler] Received: FLOOR_REQUEST 1 UP 6 1
+[2025-03-31 10:33:30.222] [Scheduler] Processing floor request from floor 1 going UP to 6 with 1 passenger(s).
+[2025-03-31 10:33:30.222] [Scheduler] Round-robin selection: Elevator 2 assigned for floor request from floor 1 to 6 with 1 passenger(s). Next elevator pointer set to 3.
+[2025-03-31 10:33:30.223] [Scheduler] Sent command: ASSIGN_ELEVATOR 2 6 1 to 127.0.0.1:8002
+[2025-03-31 10:33:31.227] [Scheduler] Received: FLOOR_REQUEST 1 UP 7 1
+[2025-03-31 10:33:31.227] [Scheduler] Processing floor request from floor 1 going UP to 7 with 1 passenger(s).
+[2025-03-31 10:33:31.227] [Scheduler] Round-robin selection: Elevator 3 assigned for floor request from floor 1 to 7 with 1 passenger(s). Next elevator pointer set to 4.
+[2025-03-31 10:33:31.227] [Scheduler] Sent command: ASSIGN_ELEVATOR 3 7 1 to 127.0.0.1:8003
+[2025-03-31 10:33:33.222] ----- Elevator Status -----
+[2025-03-31 10:33:33.223] Elevator 2 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-03-31 10:33:33.223] Elevator 1 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-03-31 10:33:33.223] ---------------------------
+[2025-03-31 10:33:36.225] ----- Elevator Status -----
+[2025-03-31 10:33:36.225] Elevator 2 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-03-31 10:33:36.225] Elevator 1 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-03-31 10:33:36.225] ---------------------------
+[2025-03-31 10:33:39.230] ----- Elevator Status -----
+[2025-03-31 10:33:39.231] Elevator 2 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-03-31 10:33:39.231] Elevator 1 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-03-31 10:33:39.231] ---------------------------
+[2025-03-31 10:33:41.233] [Scheduler] Received: SHUTDOWN
+[2025-03-31 10:33:41.233] [Scheduler] Shutdown command received.

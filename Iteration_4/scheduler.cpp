@@ -11,40 +11,67 @@
 #include <mutex>
 #include <condition_variable>
 #include <vector>
+#include <unordered_map>
+#include <chrono>
 #include <arpa/inet.h>  // for htons()
 
 enum class SchedulerState { IDLE, ASSIGNING, WAITING };
 
+struct ElevatorInfo {
+    int floor;
+    int occupancy;
+    int capacity;
+    int movementCount;
+    std::string status;
+};
+
 class Scheduler {
 public:
-    Scheduler() : state(SchedulerState::IDLE), running(true) {}
-    ~Scheduler() { running = false; }
-
-    // Start the receiver and processing threads.
+    Scheduler() : state(SchedulerState::IDLE), running(true), displayRunning(true) {}
+    ~Scheduler() { running = false; displayRunning = false; }
+ 
+    // Start the receiver, processor, and display threads.
     void start() {
+        startTime = std::chrono::steady_clock::now();
         receiverThread = std::thread(&Scheduler::receiveLoop, this);
         processorThread = std::thread(&Scheduler::processLoop, this);
+        displayThread = std::thread(&Scheduler::displayLoop, this);
     }
-
+ 
     void join() {
         if (receiverThread.joinable()) receiverThread.join();
         if (processorThread.joinable()) processorThread.join();
+        if (displayThread.joinable()) displayThread.join();
+        auto endTime = std::chrono::steady_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(endTime - startTime).count();
+        int totalMovements = 0;
+        {
+            std::lock_guard<std::mutex> lock(statusMutex);
+            for (auto &entry : elevatorStatusMap) {
+                totalMovements += entry.second.movementCount;
+            }
+        }
+        std::cout << "[Scheduler] Simulation time: " << elapsed << " seconds. Total movements: " << totalMovements << "\n";
     }
-
+ 
 private:
     SchedulerState state;
     bool running;
-
-    // Queue and synchronization for received messages.
+    bool displayRunning;
+ 
     std::queue<std::string> messageQueue;
     std::mutex queueMutex;
     std::condition_variable queueCV;
-
-    // Threads.
+ 
     std::thread receiverThread;
     std::thread processorThread;
-
-    // UDP receive loop.
+    std::thread displayThread;
+ 
+    std::unordered_map<int, ElevatorInfo> elevatorStatusMap;
+    std::mutex statusMutex;
+ 
+    std::chrono::steady_clock::time_point startTime;
+ 
     void receiveLoop() {
         try {
             DatagramSocket udpSocket(htons(8000));
@@ -65,8 +92,7 @@ private:
             std::cerr << "[Scheduler] Exception in receiver: " << e.what() << "\n";
         }
     }
-
-    // Message processing loop.
+ 
     void processLoop() {
         while (running) {
             std::unique_lock<std::mutex> lock(queueMutex);
@@ -78,8 +104,7 @@ private:
             processMessage(msg);
         }
     }
-
-    // Process a received message.
+ 
     void processMessage(const std::string &msg) {
         std::istringstream iss(msg);
         std::string type;
@@ -91,38 +116,66 @@ private:
             iss >> floor >> direction >> destination;
             std::cout << "[Scheduler] Processing floor request from floor " << floor 
                       << " going " << direction << " to " << destination << "\n";
-            // For demonstration, alternate between elevator 1 and 2.
-            static int lastAssigned = 0;
-            int numElevators = 2; // for demo purposes
-            int assignedElevator = (lastAssigned % numElevators) + 1;
-            lastAssigned++;
-    
-            std::string command = "ASSIGN_ELEVATOR " + std::to_string(assignedElevator) 
-                                  + " " + std::to_string(destination);
-            int elevatorPort = (assignedElevator == 1) ? 8001 : 8002;
-            sendCommand(command, "127.0.0.1", htons(elevatorPort));
-        } 
-        // Handle Faults
+            int numElevators = 2;
+            int assignedElevator = -1;
+            {
+                std::lock_guard<std::mutex> lock(statusMutex);
+                for (int i = 1; i <= numElevators; i++) {
+                    if (elevatorStatusMap.find(i) != elevatorStatusMap.end()) {
+                        ElevatorInfo info = elevatorStatusMap[i];
+                        if (info.occupancy < info.capacity) {
+                            assignedElevator = i;
+                            break;
+                        }
+                    } else {
+                        assignedElevator = i;
+                        break;
+                    }
+                }
+            }
+            if (assignedElevator == -1) {
+                std::cout << "[Scheduler] All elevators full. Requeuing request.\n";
+                {
+                    std::lock_guard<std::mutex> lock(queueMutex);
+                    messageQueue.push(msg);
+                }
+                std::this_thread::sleep_for(std::chrono::seconds(2));
+                queueCV.notify_one();
+            } else {
+                std::string command = "ASSIGN_ELEVATOR " + std::to_string(assignedElevator) 
+                                      + " " + std::to_string(destination);
+                int elevatorPort = (assignedElevator == 1) ? 8001 : 8002;
+                sendCommand(command, "127.0.0.1", htons(elevatorPort));
+            }
+        }
         else if (type == "FAULT") {
             std::string faultType;
             int floor;
             iss >> faultType >> floor;
             std::cout << "[Scheduler] Handling fault: " << faultType << " on floor " << floor << "\n";
-            // Forward fault to the appropriate elevator
             std::string command = "FAULT " + faultType + " " + std::to_string(floor);
-            int elevatorPort = (floor % 2 == 1) ? 8001 : 8002; // Assign to elevator 1 or 2 based on floor
+            int elevatorPort = (floor % 2 == 1) ? 8001 : 8002;
             sendCommand(command, "127.0.0.1", htons(elevatorPort));
         } 
         else if (type == "ELEVATOR_STATUS") {
-            int elevatorId, currentFloor;
+            int elevatorId, currentFloor, occupancy, capacity, movementCount;
             std::string status;
-            iss >> elevatorId >> currentFloor >> status;
-            std::cout << "[Scheduler] Elevator " << elevatorId << " is at floor " 
-                      << currentFloor << " (" << status << ")\n";
+            iss >> elevatorId >> currentFloor >> status >> occupancy >> capacity >> movementCount;
+            {
+                std::lock_guard<std::mutex> lock(statusMutex);
+                elevatorStatusMap[elevatorId] = {currentFloor, occupancy, capacity, movementCount, status};
+            }
+            std::cout << "[Scheduler] Elevator " << elevatorId << " is at floor " << currentFloor 
+                      << " (" << status << ") Occupancy: " << occupancy << "/" << capacity 
+                      << " Movements: " << movementCount << "\n";
+        }
+        else if (type == "SHUTDOWN") {
+            std::cout << "[Scheduler] Shutdown command received.\n";
+            running = false;
+            displayRunning = false;
         }
     }
-
-    // Send a UDP command message to the specified address/port.
+ 
     void sendCommand(const std::string &command, const std::string &address, int port) {
         try {
             DatagramSocket udpSocket;
@@ -135,8 +188,47 @@ private:
             std::cerr << "[Scheduler] Send error: " << e.what() << "\n";
         }
     }
+ 
+    void displayLoop() {
+        std::unordered_map<int, ElevatorInfo> lastPrintedMap;
+        while (displayRunning) {
+            bool changed = false;
+            {
+                std::lock_guard<std::mutex> lock(statusMutex);
+                if (lastPrintedMap.size() != elevatorStatusMap.size()) {
+                    changed = true;
+                } else {
+                    for (auto &entry : elevatorStatusMap) {
+                        int id = entry.first;
+                        const ElevatorInfo &currentInfo = entry.second;
+                        if (lastPrintedMap.find(id) == lastPrintedMap.end() ||
+                            lastPrintedMap[id].floor != currentInfo.floor ||
+                            lastPrintedMap[id].occupancy != currentInfo.occupancy ||
+                            lastPrintedMap[id].capacity != currentInfo.capacity ||
+                            lastPrintedMap[id].movementCount != currentInfo.movementCount ||
+                            lastPrintedMap[id].status != currentInfo.status) {
+                            changed = true;
+                            break;
+                        }
+                    }
+                }
+                if (changed) {
+                    lastPrintedMap = elevatorStatusMap;
+                    std::cout << "----- Elevator Status -----\n";
+                    for (auto &entry : elevatorStatusMap) {
+                        std::cout << "Elevator " << entry.first << " - Floor: " << entry.second.floor 
+                                  << ", Occupancy: " << entry.second.occupancy << "/" << entry.second.capacity 
+                                  << ", Status: " << entry.second.status 
+                                  << ", Movements: " << entry.second.movementCount << "\n";
+                    }
+                    std::cout << "---------------------------\n";
+                }
+            }
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
+    }
 };
-
+ 
 int main() {
     Scheduler scheduler;
     scheduler.start();

@@ -88,7 +88,6 @@ private:
         
     }
     
-
     // Send a floor request to the Scheduler.
     void sendRequest(int destinationFloor, const std::string &direction) {
         state = FloorState::REQUESTING;

@@ -1,0 +1,6 @@
+Here's the breakdown.
+
+Code Implementation / Design : David Hos, Jayven Larsen, Aj Donald 
+Unit Test Development : Sami Kasouha
+UML/State Diagrams: Adam Sultan, Sami Kasouha  
+Validation & Verification (debugging and testing): David Hos, Jayven Larsen, Adam Sultan
