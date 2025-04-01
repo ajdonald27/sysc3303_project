@@ -4,7 +4,7 @@
  * Date: March 23rd, 2025
  *
  * Floor module: Reads a trace file and sends floor requests (with a default passenger count of 1)
- * to the Scheduler.
+ * to the Scheduler
  */
 
  #include "Datagram.h"
@@ -14,7 +14,7 @@
  #include <thread>
  #include <chrono>
  #include <string>
- #include <arpa/inet.h>  // for htons()
+ #include <arpa/inet.h>
  
  enum class FloorState { IDLE, REQUESTING };
  
@@ -25,7 +25,7 @@
   
      ~Floor() { running = false; }
   
-     // Start processing the trace file.
+     // Start processing the trace
      void start(const std::string &traceFile) {
          simulationThread = std::thread(&Floor::processTraceFile, this, traceFile);
      }
@@ -40,7 +40,7 @@
      bool running;
      std::thread simulationThread;
   
-     // Process each request in the trace file.
+     // Process each request in the trace file
      void processTraceFile(const std::string &filename) {
          std::ifstream infile(filename);
          if (!infile) {
@@ -49,7 +49,7 @@
          }
          std::string line;
          while (std::getline(infile, line)) {
-             if (line.empty() || line[0] == '#') continue; // Skip comments/empty lines
+             if (line.empty() || line[0] == '#') continue;
              std::istringstream iss(line);
              std::string timestamp, direction, faultType = "None";
              int requestFloor, destination;
@@ -58,7 +58,7 @@
                  Logger::getInstance().log("[Floor " + std::to_string(floorNumber) + "] Malformed line in trace file.");
                  continue;
              }
-             // Process only if the trace is for this floor.
+             // Process only if the trace is for this floor
              if (requestFloor == floorNumber) {
                  if (faultType != "None") {
                      handleFault(faultType, requestFloor);
@@ -85,7 +85,7 @@
          }
      }
      
-     // Sends a floor request with a default passenger count of 1.
+     // Sends a floor request with a default passenger count of 1
      void sendRequest(int destinationFloor, const std::string &direction) {
          state = FloorState::REQUESTING;
          std::string request = "FLOOR_REQUEST " + std::to_string(floorNumber) + " " +
@@ -108,7 +108,7 @@
      Floor floor1(1);
      Floor floor2(2);
   
-     // Update "trace.txt" as needed.
+     // Update "trace.txt" as needed
      floor1.start("trace.txt");
      floor2.start("trace.txt");
   

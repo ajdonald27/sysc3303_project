@@ -39,12 +39,12 @@ public:
         messageQueue.push(msg);
     }
 
-    // Process all messages in the queue.
+    // Process all messages in the queue
     void processAllMessages() {
         while (!messageQueue.empty()) {
             Message msg = messageQueue.front();
             messageQueue.pop();
-            // Simulate processing by outputting the message.
+            // Simulate processing by outputting the message
             std::cout << "[Scheduler] Processing message: " << msg.content << std::endl;
         }
     }
@@ -55,7 +55,6 @@ int main() {
 
     std::cout << "Starting Scheduler Unit Test" << std::endl;
 
-    // Simulate a sequence of messages.
     testScheduler.receiveMessage({ELEVATOR_STATUS, "ELEVATOR_STATUS 1 0 IDLE 0 10 0"});
     testScheduler.receiveMessage({ELEVATOR_STATUS, "ELEVATOR_STATUS 2 0 IDLE 0 10 0"});
     testScheduler.receiveMessage({FLOOR_REQUEST, "FLOOR_REQUEST 1 UP 5 1"});
@@ -65,13 +64,13 @@ int main() {
     testScheduler.receiveMessage({FAULT, "FAULT SENSOR_FAILURE 1"});
     testScheduler.receiveMessage({FLOOR_REQUEST, "FLOOR_REQUEST 1 UP 7 1"});
     testScheduler.receiveMessage({SHUTDOWN, "SHUTDOWN"});
-    // This message is sent after shutdown and should be discarded.
+    // This message is sent after shutdown and should be discarded
     testScheduler.receiveMessage({FLOOR_REQUEST, "FLOOR_REQUEST 1 UP 5 1"});
 
-    // Process all messages that were accepted.
+    // Process all messages that were accepted
     testScheduler.processAllMessages();
 
-    // Verify that the message queue is empty.
+    // Check that the message queue is empty
     assert(testScheduler.messageQueue.empty());
     std::cout << "Test passed. Message queue is empty." << std::endl;
 
