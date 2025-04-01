@@ -4,7 +4,7 @@
  * Date: March 23rd, 2025
  *
  * Elevator module: Listens for commands, updates occupancy based on the number of passengers boarding,
- * moves to the target floor, and updates the Scheduler with its status.
+ * moves to the target floor, and updates the Scheduler with its status
  */
 
  #include "Datagram.h"
@@ -15,7 +15,7 @@
  #include <chrono>
  #include <sstream>
  #include <cstdlib>
- #include <arpa/inet.h>  // for htons()
+ #include <arpa/inet.h>
  #include <cmath>
  #include <string>
  #include <vector>
@@ -30,7 +30,7 @@
   
      ~Elevator() { running = false; }
   
-     // Start the UDP listener thread.
+     // Start the UDP listener thread
      void start() {
          listenerThread = std::thread(&Elevator::listenerLoop, this);
      }
@@ -44,14 +44,14 @@
      int currentFloor;
      ElevatorState state;
      bool running;
-     int port;  // Elevator listens on its own port.
+     int port;  // Elevator listens on its own port
      std::mutex stateMutex;
      std::thread listenerThread;
      int capacity;
      int currentOccupancy;
      int movementCount;
   
-     // Constants for timing and fault thresholds.
+     // Constants for timing / fault thresholds
      static constexpr int TIME_PER_FLOOR = 5;
      static constexpr int DOOR_OPEN_TIME = 2;
      static constexpr int DOOR_CLOSE_TIME = 2;
@@ -139,7 +139,7 @@
          }
      }
   
-     // Move to the target floor while updating occupancy.
+     // Move to the target floor while updating occupancy
      void moveToFloor(int floor, int passengerCount) {
          {
              std::lock_guard<std::mutex> lock(stateMutex);
@@ -256,7 +256,7 @@
      }
  };
   
- // Define static constexpr members.
+ // Define static constexpr members
  constexpr int Elevator::TIME_PER_FLOOR;
  constexpr int Elevator::DOOR_OPEN_TIME;
  constexpr int Elevator::DOOR_CLOSE_TIME;
@@ -265,7 +265,7 @@
  #ifndef UNIT_TEST
   
  int main() {
-     // Create four elevators with unique ports.
+     // Create four elevators on different ports
      Elevator elevator1(1, 0, 8001);
      Elevator elevator2(2, 0, 8002);
      Elevator elevator3(3, 0, 8003);

@@ -1,7 +1,7 @@
 /**
- * SYSC3303 - Project Iteration 4
+ * SYSC3303 - Project Iteration 5
  * Authors: Sami Kasouha
- * Date: March 18th, 2025
+ * Date: March 23rd, 2025
  *
  * Floor Unit Test: Trace file processing and fault injection test using asserts.
  */
@@ -17,17 +17,17 @@
  void testFloorTraceProcessing() {
      cout << "Running test: Floor trace + fault injection using provided trace.txt...\n";
  
-     // Launch the Floor system in a thread.
+     // Launch the Floor system in a thread
      thread floorThread([]() {
-         Floor floor(1); // Using Floor 1 as defined in trace.txt.
+         Floor floor(1);
          floor.start("trace.txt");
          floor.join();
          // If join() returns, we assume the trace was processed successfully.
-         assert(true); // Reaching here means the floor finished processing.
+         assert(true); // Reaching here means the floor finished processing
      });
  
-     // Allow time for the floor to process the trace file.
-     this_thread::sleep_for(chrono::seconds(10));
+     // Allow time for the floor to process the trace file
+     this_thread::sleep_for(chrono::seconds(1));
      cout << "Floor trace test completed.\n";
      floorThread.join();
  }

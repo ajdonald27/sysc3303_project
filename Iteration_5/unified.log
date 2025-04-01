@@ -337,3 +337,144 @@
 [2025-03-31 10:33:39.231] ---------------------------
 [2025-03-31 10:33:41.233] [Scheduler] Received: SHUTDOWN
 [2025-03-31 10:33:41.233] [Scheduler] Shutdown command received.
+[2025-04-01 09:57:32.463] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 5 1
+[2025-04-01 09:57:37.469] [Floor 1] Sent request: FLOOR_REQUEST 1 DOWN 1 1
+[2025-04-01 09:57:42.479] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 4 1
+[2025-04-01 09:57:44.357] ----- Elevator Status -----
+[2025-04-01 09:57:44.357] ---------------------------
+[2025-04-01 09:57:44.357] [Scheduler] Listening on port 8000...
+[2025-04-01 09:57:45.362] [Scheduler] Received: ELEVATOR_STATUS 1 0 IDLE 0 10 0
+[2025-04-01 09:57:45.362] [Scheduler] Received: ELEVATOR_STATUS 2 0 IDLE 0 10 0
+[2025-04-01 09:57:45.362] [Scheduler] Elevator 1 is at floor 0 (IDLE) Occupancy: 0/10 Movements: 0
+[2025-04-01 09:57:45.362] [Scheduler] Elevator 2 is at floor 0 (IDLE) Occupancy: 0/10 Movements: 0
+[2025-04-01 09:57:46.375] [Scheduler] Received: FLOOR_REQUEST 1 UP 5 1
+[2025-04-01 09:57:46.375] [Scheduler] Processing floor request from floor 1 going UP to 5 with 1 passenger(s).
+[2025-04-01 09:57:46.375] [Scheduler] Round-robin selection: Elevator 1 assigned for floor request from floor 1 to 5 with 1 passenger(s). Next elevator pointer set to 2.
+[2025-04-01 09:57:46.376] [Scheduler] Sent command: ASSIGN_ELEVATOR 1 5 1 to 127.0.0.1:8001
+[2025-04-01 09:57:47.362] ----- Elevator Status -----
+[2025-04-01 09:57:47.363] Elevator 2 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-04-01 09:57:47.363] Elevator 1 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-04-01 09:57:47.363] ---------------------------
+[2025-04-01 09:57:47.378] [Scheduler] Received: FLOOR_REQUEST 1 UP 6 1
+[2025-04-01 09:57:47.378] [Scheduler] Processing floor request from floor 1 going UP to 6 with 1 passenger(s).
+[2025-04-01 09:57:47.378] [Scheduler] Round-robin selection: Elevator 2 assigned for floor request from floor 1 to 6 with 1 passenger(s). Next elevator pointer set to 3.
+[2025-04-01 09:57:47.378] [Scheduler] Sent command: ASSIGN_ELEVATOR 2 6 1 to 127.0.0.1:8002
+[2025-04-01 09:57:47.484] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 6 1
+[2025-04-01 09:57:47.484] [Scheduler] Received: FLOOR_REQUEST 1 UP 6 1
+[2025-04-01 09:57:47.484] [Scheduler] Processing floor request from floor 1 going UP to 6 with 1 passenger(s).
+[2025-04-01 09:57:47.484] [Scheduler] Round-robin selection: Elevator 3 assigned for floor request from floor 1 to 6 with 1 passenger(s). Next elevator pointer set to 4.
+[2025-04-01 09:57:47.485] [Scheduler] Sent command: ASSIGN_ELEVATOR 3 6 1 to 127.0.0.1:8003
+[2025-04-01 09:57:48.387] [Scheduler] Received: FLOOR_REQUEST 1 UP 7 1
+[2025-04-01 09:57:48.388] [Scheduler] Processing floor request from floor 1 going UP to 7 with 1 passenger(s).
+[2025-04-01 09:57:48.388] [Scheduler] Round-robin selection: Elevator 4 assigned for floor request from floor 1 to 7 with 1 passenger(s). Next elevator pointer set to 1.
+[2025-04-01 09:57:48.388] [Scheduler] Sent command: ASSIGN_ELEVATOR 4 7 1 to 127.0.0.1:8004
+[2025-04-01 09:57:50.366] ----- Elevator Status -----
+[2025-04-01 09:57:50.366] Elevator 2 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-04-01 09:57:50.366] Elevator 1 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-04-01 09:57:50.366] ---------------------------
+[2025-04-01 09:57:52.490] [Floor 1] Injecting fault: FAULT SENSOR_FAILURE 1
+[2025-04-01 09:57:52.490] [Floor 1] Sent fault: FAULT SENSOR_FAILURE 1
+[2025-04-01 09:57:52.491] [Scheduler] Received: FAULT SENSOR_FAILURE 1
+[2025-04-01 09:57:52.491] [Scheduler] Handling fault: SENSOR_FAILURE on floor 1
+[2025-04-01 09:57:52.491] [Scheduler] Sent command: FAULT SENSOR_FAILURE 1 to 127.0.0.1:8001
+[2025-04-01 09:57:53.371] ----- Elevator Status -----
+[2025-04-01 09:57:53.372] Elevator 2 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-04-01 09:57:53.372] Elevator 1 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-04-01 09:57:53.372] ---------------------------
+[2025-04-01 09:57:56.377] ----- Elevator Status -----
+[2025-04-01 09:57:56.377] Elevator 2 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-04-01 09:57:56.377] Elevator 1 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-04-01 09:57:56.377] ---------------------------
+[2025-04-01 09:57:57.496] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 7 1
+[2025-04-01 09:57:57.496] [Scheduler] Received: FLOOR_REQUEST 1 UP 7 1
+[2025-04-01 09:57:57.496] [Scheduler] Processing floor request from floor 1 going UP to 7 with 1 passenger(s).
+[2025-04-01 09:57:57.496] [Scheduler] Round-robin selection: Elevator 1 assigned for floor request from floor 1 to 7 with 1 passenger(s). Next elevator pointer set to 2.
+[2025-04-01 09:57:57.496] [Scheduler] Sent command: ASSIGN_ELEVATOR 1 7 1 to 127.0.0.1:8001
+[2025-04-01 09:57:58.393] [Scheduler] Received: SHUTDOWN
+[2025-04-01 09:57:58.394] [Scheduler] Shutdown command received.
+[2025-04-01 09:58:01.725] [Scheduler] Received: FLOOR_REQUEST 1 UP 5 1
+[2025-04-01 09:58:01.725] [Scheduler] Simulation time: 17 seconds. Total movements: 0
+[2025-04-01 09:58:01.725] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 5 1
+[2025-04-01 09:58:02.500] [Floor 1] Injecting fault: FAULT STUCK_ELEVATOR 1
+[2025-04-01 09:58:02.501] [Floor 1] Sent fault: FAULT STUCK_ELEVATOR 1
+[2025-04-01 09:58:06.733] [Floor 1] Sent request: FLOOR_REQUEST 1 DOWN 1 1
+[2025-04-01 09:58:07.507] [Floor 1] Sent request: FLOOR_REQUEST 1 DOWN 2 1
+[2025-04-01 09:58:12.509] [Floor 1] Injecting fault: FAULT DOOR_FAILURE 1
+[2025-04-01 09:58:12.510] [Floor 1] Sent fault: FAULT DOOR_FAILURE 1
+[2025-04-01 09:58:18.631] ----- Elevator Status -----
+[2025-04-01 09:58:18.632] ---------------------------
+[2025-04-01 09:58:18.632] [Scheduler] Listening on port 8000...
+[2025-04-01 09:58:19.636] [Scheduler] Received: ELEVATOR_STATUS 1 0 IDLE 0 10 0
+[2025-04-01 09:58:19.636] [Scheduler] Elevator 1 is at floor 0 (IDLE) Occupancy: 0/10 Movements: 0
+[2025-04-01 09:58:19.637] [Scheduler] Received: ELEVATOR_STATUS 2 0 IDLE 0 10 0
+[2025-04-01 09:58:19.637] [Scheduler] Elevator 2 is at floor 0 (IDLE) Occupancy: 0/10 Movements: 0
+[2025-04-01 09:58:20.642] [Scheduler] Received: FLOOR_REQUEST 1 UP 5 1
+[2025-04-01 09:58:20.642] [Scheduler] Processing floor request from floor 1 going UP to 5 with 1 passenger(s).
+[2025-04-01 09:58:20.642] [Scheduler] Round-robin selection: Elevator 1 assigned for floor request from floor 1 to 5 with 1 passenger(s). Next elevator pointer set to 2.
+[2025-04-01 09:58:20.643] [Scheduler] Sent command: ASSIGN_ELEVATOR 1 5 1 to 127.0.0.1:8001
+[2025-04-01 09:58:21.637] ----- Elevator Status -----
+[2025-04-01 09:58:21.638] Elevator 2 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-04-01 09:58:21.638] Elevator 1 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-04-01 09:58:21.638] ---------------------------
+[2025-04-01 09:58:21.647] [Scheduler] Received: FLOOR_REQUEST 1 UP 6 1
+[2025-04-01 09:58:21.648] [Scheduler] Processing floor request from floor 1 going UP to 6 with 1 passenger(s).
+[2025-04-01 09:58:21.648] [Scheduler] Round-robin selection: Elevator 2 assigned for floor request from floor 1 to 6 with 1 passenger(s). Next elevator pointer set to 3.
+[2025-04-01 09:58:21.648] [Scheduler] Sent command: ASSIGN_ELEVATOR 2 6 1 to 127.0.0.1:8002
+[2025-04-01 09:58:22.653] [Scheduler] Received: FLOOR_REQUEST 1 UP 7 1
+[2025-04-01 09:58:22.654] [Scheduler] Processing floor request from floor 1 going UP to 7 with 1 passenger(s).
+[2025-04-01 09:58:22.654] [Scheduler] Round-robin selection: Elevator 3 assigned for floor request from floor 1 to 7 with 1 passenger(s). Next elevator pointer set to 4.
+[2025-04-01 09:58:22.654] [Scheduler] Sent command: ASSIGN_ELEVATOR 3 7 1 to 127.0.0.1:8003
+[2025-04-01 09:58:24.643] ----- Elevator Status -----
+[2025-04-01 09:58:24.643] Elevator 2 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-04-01 09:58:24.643] Elevator 1 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-04-01 09:58:24.643] ---------------------------
+[2025-04-01 09:58:27.648] ----- Elevator Status -----
+[2025-04-01 09:58:27.648] Elevator 2 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-04-01 09:58:27.648] Elevator 1 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-04-01 09:58:27.648] ---------------------------
+[2025-04-01 09:58:30.649] ----- Elevator Status -----
+[2025-04-01 09:58:30.649] Elevator 2 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-04-01 09:58:30.649] Elevator 1 - Floor: 0, Occupancy: 0/10, Status: IDLE, Movements: 0
+[2025-04-01 09:58:30.649] ---------------------------
+[2025-04-01 09:58:32.659] [Scheduler] Received: SHUTDOWN
+[2025-04-01 09:58:32.659] [Scheduler] Shutdown command received.
+[2025-04-01 09:58:32.734] [Scheduler] Received: FLOOR_REQUEST 1 UP 5 1
+[2025-04-01 09:58:32.734] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 5 1
+[2025-04-01 09:58:33.656] [Scheduler] Simulation time: 15 seconds. Total movements: 0
+[2025-04-01 09:58:37.740] [Floor 1] Sent request: FLOOR_REQUEST 1 DOWN 1 1
+[2025-04-01 09:58:42.745] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 4 1
+[2025-04-01 09:58:47.751] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 6 1
+[2025-04-01 09:58:52.755] [Floor 1] Injecting fault: FAULT SENSOR_FAILURE 1
+[2025-04-01 09:58:52.756] [Floor 1] Sent fault: FAULT SENSOR_FAILURE 1
+[2025-04-01 09:58:57.760] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 7 1
+[2025-04-01 09:59:02.766] [Floor 1] Injecting fault: FAULT STUCK_ELEVATOR 1
+[2025-04-01 09:59:02.766] [Floor 1] Sent fault: FAULT STUCK_ELEVATOR 1
+[2025-04-01 09:59:07.772] [Floor 1] Sent request: FLOOR_REQUEST 1 DOWN 2 1
+[2025-04-01 09:59:12.776] [Floor 1] Injecting fault: FAULT DOOR_FAILURE 1
+[2025-04-01 09:59:12.777] [Floor 1] Sent fault: FAULT DOOR_FAILURE 1
+[2025-04-01 09:59:52.805] [Floor 1] Finished processing trace file.
+[2025-04-01 10:43:02.740] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 5 1
+[2025-04-01 10:43:07.748] [Floor 1] Sent request: FLOOR_REQUEST 1 DOWN 1 1
+[2025-04-01 10:43:12.750] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 4 1
+[2025-04-01 10:43:17.756] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 6 1
+[2025-04-01 10:43:22.761] [Floor 1] Injecting fault: FAULT SENSOR_FAILURE 1
+[2025-04-01 10:43:22.762] [Floor 1] Sent fault: FAULT SENSOR_FAILURE 1
+[2025-04-01 10:43:27.766] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 7 1
+[2025-04-01 10:43:32.772] [Floor 1] Injecting fault: FAULT STUCK_ELEVATOR 1
+[2025-04-01 10:43:32.773] [Floor 1] Sent fault: FAULT STUCK_ELEVATOR 1
+[2025-04-01 10:43:37.778] [Floor 1] Sent request: FLOOR_REQUEST 1 DOWN 2 1
+[2025-04-01 10:43:42.782] [Floor 1] Injecting fault: FAULT DOOR_FAILURE 1
+[2025-04-01 10:43:42.783] [Floor 1] Sent fault: FAULT DOOR_FAILURE 1
+[2025-04-01 10:44:12.292] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 5 1
+[2025-04-01 10:44:17.299] [Floor 1] Sent request: FLOOR_REQUEST 1 DOWN 1 1
+[2025-04-01 10:44:22.300] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 4 1
+[2025-04-01 10:44:27.306] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 6 1
+[2025-04-01 10:44:32.311] [Floor 1] Injecting fault: FAULT SENSOR_FAILURE 1
+[2025-04-01 10:44:32.312] [Floor 1] Sent fault: FAULT SENSOR_FAILURE 1
+[2025-04-01 10:44:37.316] [Floor 1] Sent request: FLOOR_REQUEST 1 UP 7 1
+[2025-04-01 10:44:42.318] [Floor 1] Injecting fault: FAULT STUCK_ELEVATOR 1
+[2025-04-01 10:44:42.319] [Floor 1] Sent fault: FAULT STUCK_ELEVATOR 1
+[2025-04-01 10:44:47.325] [Floor 1] Sent request: FLOOR_REQUEST 1 DOWN 2 1
+[2025-04-01 10:44:52.330] [Floor 1] Injecting fault: FAULT DOOR_FAILURE 1
+[2025-04-01 10:44:52.331] [Floor 1] Sent fault: FAULT DOOR_FAILURE 1
+[2025-04-01 10:45:32.355] [Floor 1] Finished processing trace file.
