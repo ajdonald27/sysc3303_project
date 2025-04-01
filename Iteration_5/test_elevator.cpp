@@ -27,7 +27,7 @@
      });
  
      // Allow time for the floor to process the trace file.
-     this_thread::sleep_for(chrono::seconds(10));
+     this_thread::sleep_for(chrono::seconds(1));
      cout << "Floor trace test completed.\n";
      floorThread.join();
  }
