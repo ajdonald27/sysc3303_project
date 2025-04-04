@@ -197,6 +197,7 @@
          auto startTime = std::chrono::steady_clock::now();
          std::this_thread::sleep_for(std::chrono::seconds(DOOR_OPEN_TIME));
      
+        // keeping track of the time 
          auto currentTime = std::chrono::steady_clock::now();
          auto elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count();
      
