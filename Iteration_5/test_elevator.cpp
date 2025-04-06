@@ -1,9 +1,9 @@
 /**
  * SYSC3303 - Project Iteration 5
- * Authors: Sami Kasouha
+ * Authors: Sami Kasouha, Adam Sultan
  * Date: March 23rd, 2025
  *
- * Floor Unit Test: Trace file processing and fault injection test using asserts.
+ *
  */
 
  #include "floor.cpp"
