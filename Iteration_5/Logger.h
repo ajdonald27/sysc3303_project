@@ -3,7 +3,7 @@
  * Authors: David Hos, Aj Donald, Jayven Larsen
  * Date: March 23rd, 2025
  *
- * Logger with millisecond timestamps.
+ * Logger with millisecond timestamps
  */
 
  #ifndef LOGGER_H
@@ -26,7 +26,7 @@
          return instance;
      }
  
-     // Log a message with a timestamp in ms.
+     // Log a message with a timestamp in ms
      void log(const std::string &message) {
          std::lock_guard<std::mutex> lock(logMutex);
          auto now = std::chrono::system_clock::now();
